@@ -145,6 +145,9 @@ body{margin:0;background:radial-gradient(circle at top left,#16213d 0,#0b1020 35
   </section>
 </div>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<!-- Firebase compat SDK: permite sincronizar tickets entre computadoras desde GitHub Pages -->
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 <script>
 const SHIFT_HOURS = (9*60+35-10-30)/60; // 8:00 a 17:35, dos pausas de 5 y comida 30
 const BOTH = ["1211012313","1HE0083919","1HE0SSBS5E","1VI1804701","1VI2954081","1VI2954101","1VI7816181","1VIT18RDP5","1ZK4487040","1ZK837X038","1ZK9688079","3CB4204001","3CB4204002","3CB4204003","3CB4204004","3CB4204005","3CB4204006","3CB4204008","3CB4204010","3CB4204013","3CB4204015","62100000C4"];
@@ -220,8 +223,56 @@ function belongs(id){id=id.toUpperCase(); if(BOTH.includes(id)) return "L7 + L8"
 function defaultState(){
   return {params:{inspectionH:2,resupplyMin:30,safetyPct:15,defaultPack:100,l7Rate:20,l8Rate:20}, components: ALLIDS.map(id=>({id, desc:(descMap[id]||id), unit:(usageMap[id]?.u||"UDS"), useL7:(usageMap[id]?.l7||0), useL8:(usageMap[id]?.l8||0), belongs:belongs(id), stock: Math.round((usageMap[id]?.u==="M"?50:500) + Math.random()*700), pack:(usageMap[id]?.u==="M"?25:100), manualCritical: BOTH.includes(id), erpConsumptionH:0, erpStock:null})), supplyTickets:[], consumptionTickets:[], logs:[]}
 }
+// ============================================================
+// FIREBASE / SINCRONIZACIÓN EN VIVO
+// ============================================================
+// 1) Crea un proyecto en Firebase.
+// 2) Activa Firestore Database.
+// 3) Copia aquí tu firebaseConfig.
+// 4) Cambia USE_FIREBASE a true.
+//
+// Mientras USE_FIREBASE = false, el tablero sigue guardando solo en este navegador.
+const USE_FIREBASE = true;
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyAxuUXNEym014Whd6tv87EAFbQNqBHhqIw",
+  authDomain: "database-andon.firebaseapp.com",
+  projectId: "database-andon",
+  storageBucket: "database-andon.firebasestorage.app",
+  messagingSenderId: "881134516844",
+  appId: "1:881134516844:web:29dd913af7f95aa8ba7649",
+  measurementId: "G-JYY3Q454BQ"
+};
+const FIREBASE_DOC_PATH = "dashboards/andon_l7_l8"; // un solo estado compartido para todas
+let db = null;
+let cloudReady = false;
+let applyingRemoteState = false;
+let cloudSaveTimer = null;
+
 let state = JSON.parse(localStorage.getItem("andonL7L8EditableNeedsState")||"null") || defaultState();
-function save(){ localStorage.setItem("andonL7L8EditableNeedsState", JSON.stringify(state)); document.getElementById('saveState').textContent='Guardado '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}); }
+function save(){
+  // Guarda siempre local como respaldo.
+  localStorage.setItem("andonL7L8EditableNeedsState", JSON.stringify(state));
+  document.getElementById('saveState').textContent = cloudReady
+    ? 'Sincronizando...'
+    : 'Guardado local '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+
+  // Si Firebase está activo, sube el estado compartido.
+  if(cloudReady && !applyingRemoteState){
+    clearTimeout(cloudSaveTimer);
+    cloudSaveTimer = setTimeout(async ()=>{
+      try{
+        await db.doc(FIREBASE_DOC_PATH).set({
+          state,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, {merge:true});
+        document.getElementById('saveState').textContent='Firebase sincronizado '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+      }catch(err){
+        console.error('Error guardando en Firebase', err);
+        document.getElementById('saveState').textContent='Error Firebase: revisa permisos';
+      }
+    }, 450);
+  }
+}
 function resetAll(){ if(confirm('¿Reiniciar datos demo y tickets?')){ state=defaultState(); save(); render(); } }
 function fmt(n,d=1){ if(n==null||isNaN(n)||!isFinite(n)) return '—'; return Number(n).toLocaleString('es-MX',{maximumFractionDigits:d,minimumFractionDigits:0}); }
 function unitLabel(c){return c.unit==='M'?'m':'pzas'}
@@ -321,6 +372,51 @@ function renderMaster(){
 } 
 function populateSelects(){ const opts=state.components.map(c=>`<option value="${c.id}">${c.id} · ${c.desc||c.belongs}</option>`).join(''); document.getElementById('manualSupplyComp').innerHTML=opts; }
 function render(){ state.components.forEach(refreshBelongs); document.getElementById('inspectionH').value=state.params.inspectionH; document.getElementById('resupplyMin').value=state.params.resupplyMin; document.getElementById('safetyPct').value=state.params.safetyPct; document.getElementById('defaultPack').value=state.params.defaultPack; populateSelects(); renderKpis(); renderBattery(); renderAlerts(); renderSupplyTickets(); renderConsumptionTickets(); renderLog(); renderMaster(); }
+function isFirebaseConfigComplete(){
+  return FIREBASE_CONFIG && FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey !== 'PEGAR_AQUI' && FIREBASE_CONFIG.projectId && FIREBASE_CONFIG.projectId !== 'PEGAR_AQUI';
+}
+function setupFirebase(){
+  if(!USE_FIREBASE){
+    document.getElementById('saveState').textContent = 'Guardado local activo';
+    return;
+  }
+  if(!window.firebase){
+    document.getElementById('saveState').textContent = 'Firebase SDK no cargó';
+    return;
+  }
+  if(!isFirebaseConfigComplete()){
+    document.getElementById('saveState').textContent = 'Falta configurar Firebase';
+    return;
+  }
+  try{
+    firebase.initializeApp(FIREBASE_CONFIG);
+    db = firebase.firestore();
+    cloudReady = true;
+    document.getElementById('saveState').textContent = 'Conectando Firebase...';
+
+    db.doc(FIREBASE_DOC_PATH).onSnapshot((snap)=>{
+      const data = snap.data();
+      if(data && data.state){
+        applyingRemoteState = true;
+        state = data.state;
+        localStorage.setItem("andonL7L8EditableNeedsState", JSON.stringify(state));
+        render();
+        document.getElementById('saveState').textContent='Firebase en vivo '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+        applyingRemoteState = false;
+      }else{
+        // Si el documento aún no existe, sube el estado actual como base.
+        save();
+      }
+    }, (err)=>{
+      console.error('Error leyendo Firebase', err);
+      document.getElementById('saveState').textContent='Sin permisos en Firebase';
+    });
+  }catch(err){
+    console.error('Error iniciando Firebase', err);
+    document.getElementById('saveState').textContent='Error al iniciar Firebase';
+  }
+}
+
 // File reading
 async function readFile(file){ if(!file) return []; const name=file.name.toLowerCase(); if(name.endsWith('.csv')){ const text=await file.text(); return csvToRows(text); } if(window.XLSX){ const buf=await file.arrayBuffer(); const wb=XLSX.read(buf,{type:'array'}); return XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''}); } alert('Para XLSX se requiere internet/CDN. Usa CSV si no carga.'); return []; }
 function csvToRows(text){ const lines=text.split(/\r?\n/).filter(Boolean); const headers=lines.shift().split(',').map(x=>x.trim()); return lines.map(l=>{const vals=l.split(','); const o={}; headers.forEach((h,i)=>o[h]=vals[i]); return o}); }
@@ -332,6 +428,7 @@ async function loadFiles(){ const cons=await readFile(document.getElementById('c
 function exportData(){ const rows=state.components.map(c=>{const r=calc(c);return {ID:c.id,Uso:c.belongs,Unidad:c.unit,UsoL7:c.useL7,UsoL8:c.useL8,Stock:c.stock,ConsumoH:r.value,Fuente:r.source,ROP:r.rop,Estado:r.status,Criticidad:r.crit,Impacto:r.impact}}); const csv=[Object.keys(rows[0]).join(','),...rows.map(o=>Object.values(o).map(v=>`"${String(v).replaceAll('"','""')}"`).join(','))].join('\n'); const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download='andon_rop_l7_l8_estado.csv'; a.click(); }
 document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab-btn,.tab').forEach(x=>x.classList.remove('active')); btn.classList.add('active'); document.getElementById(btn.dataset.tab).classList.add('active');}));
 render();
+setupFirebase();
 </script>
 </body>
 </html>
