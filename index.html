@@ -27,13 +27,24 @@ body{margin:0;background:radial-gradient(circle at top left,#16213d 0,#0b1020 35
 .controls{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}@media(max-width:900px){.controls{grid-template-columns:1fr 1fr}}label{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#a7b4d3;display:block;margin-bottom:6px}input,select,textarea{width:100%;background:#0f172a;color:#e2e8f0;border:1px solid #2b3a60;border-radius:13px;padding:10px 11px;outline:none}input:focus,select:focus,textarea:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.12)}button{font-family:inherit}.btn{border:0;border-radius:14px;padding:10px 12px;font-weight:900;cursor:pointer;background:#2563eb;color:white}.btn:hover{filter:brightness(1.1)}.btn.secondary{background:#334155}.btn.green{background:#16a34a}.btn.orange{background:#ea580c}.btn.red{background:#dc2626}.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.14);color:#dbeafe}.btn.smallbtn{padding:7px 9px;font-size:12px;border-radius:10px}.actions{display:flex;gap:7px;flex-wrap:wrap}.table-wrap{overflow:auto;border-radius:18px;border:1px solid rgba(255,255,255,.08)}table{width:100%;border-collapse:collapse;background:rgba(15,23,42,.55)}th,td{padding:10px 11px;text-align:left;border-bottom:1px solid rgba(255,255,255,.07);font-size:12px;vertical-align:middle}th{position:sticky;top:0;background:#111b30;color:#a7b4d3;text-transform:uppercase;font-size:10px;letter-spacing:.07em;z-index:1}tr:hover td{background:rgba(56,189,248,.04)}.num{text-align:right;font-variant-numeric:tabular-nums}.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:900}.badge.red{background:#7f1d1d;color:#fecaca}.badge.orange{background:#7c2d12;color:#fed7aa}.badge.yellow{background:#713f12;color:#fef08a}.badge.green{background:#14532d;color:#bbf7d0}.badge.blue{background:#0c4a6e;color:#bae6fd}.badge.gray{background:#334155;color:#cbd5e1}.badge.purple{background:#4c1d95;color:#ddd6fe}
 .ticket-card{background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.10);border-radius:20px;padding:14px;margin-bottom:12px}.ticket-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.ticket-folio{font-weight:950;font-size:16px}.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:14px 0}.step{text-align:center;font-size:10px;color:#94a3b8;position:relative;padding-top:20px}.step:before{content:"";position:absolute;top:3px;left:50%;transform:translateX(-50%);width:12px;height:12px;border-radius:50%;background:#334155;border:2px solid #475569}.step.done{color:#dbeafe}.step.done:before{background:var(--green);border-color:#86efac;box-shadow:0 0 15px rgba(34,197,94,.35)}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:900px){.two-col{grid-template-columns:1fr}}
 .notice{border:1px solid rgba(56,189,248,.18);background:rgba(56,189,248,.08);border-radius:16px;padding:12px;color:#dbeafe;font-size:13px}.empty{padding:22px;border:1px dashed rgba(255,255,255,.16);border-radius:18px;text-align:center;color:var(--muted)}
+
+/* ── toma material + alert sound ── */
+.alert-sound{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.sound-dot{width:10px;height:10px;border-radius:50%;background:#64748b;box-shadow:0 0 10px rgba(100,116,139,.45)}
+.sound-dot.on{background:#22c55e;box-shadow:0 0 14px rgba(34,197,94,.5)}
+.take-card{background:linear-gradient(180deg,rgba(56,189,248,.08),rgba(255,255,255,.025));border:1px solid rgba(56,189,248,.15);border-radius:18px;padding:12px;margin-bottom:10px}
+.risk-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0 12px}
+.risk-box{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);border-radius:14px;padding:9px;text-align:center}
+.risk-box b{display:block;font-size:16px}.risk-box span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.battery.noalcanzar{outline:2px solid rgba(239,68,68,.45)}
+
 </style>
 </head>
 <body>
 <div class="app">
   <div class="header">
     <div><h1>Andón ROP Picking · Líneas 7 y 8</h1><p>Modo almacén para resurtir · Modo línea para registrar consumo · Vista de disponibles para los componentes monitoreados.</p></div>
-    <div class="pill"><span class="dot"></span><span id="saveState">Guardado local activo</span></div>
+    <div class="pill"><span class="dot"></span><span id="saveState">Sincronización pendiente</span></div>
   </div>
 
   <div class="tabs">
@@ -45,6 +56,7 @@ body{margin:0;background:radial-gradient(circle at top left,#16213d 0,#0b1020 35
   </div>
 
   <section id="dashboard" class="tab active">
+    <div class="alert-sound"><span id="soundDot" class="sound-dot"></span><button class="btn ghost smallbtn" onclick="enableAlertSound()">Activar sonido suave de alertas</button><span class="small">Suena solo cuando aparece o aumenta una alerta de reorden/no alcanza. El navegador pide un clic para permitir audio.</span></div>
     <div class="kpis" id="kpis"></div>
     <div class="grid grid-2">
       <div class="panel">
@@ -97,10 +109,29 @@ body{margin:0;background:radial-gradient(circle at top left,#16213d 0,#0b1020 35
         </div>
         <div class="actions"><button class="btn green" onclick="previewConsumption()">Previsualizar consumo</button><button class="btn" onclick="createConsumptionTicket()">Registrar consumo del día</button></div>
         <div id="consumptionPreview" style="margin-top:14px"></div>
+        <hr style="border-color:rgba(255,255,255,.08);margin:18px 0">
+        <h3>Toma de material en tiempo real</h3>
+        <p class="sub">Para cuando la línea toma una caja, rollo o cantidad parcial del rack. Esto descuenta disponibles al momento y se ve en todas las pantallas.</p>
+        <div class="controls">
+          <div><label>Línea</label><select id="takeLine"><option value="L7">Línea 7</option><option value="L8">Línea 8</option></select></div>
+          <div><label>Componente</label><select id="takeComp"></select></div>
+          <div><label>Cantidad tomada</label><input id="takeQty" type="number" min="0" step="0.01" /></div>
+          <div><label>Responsable</label><input id="takeResp" placeholder="Nombre" /></div>
+        </div>
+        <div class="actions">
+          <button class="btn orange" onclick="createTakeTicket(false)">Registrar toma</button>
+          <button class="btn ghost" onclick="createTakeTicket(true)">Registrar toma + iniciar primer uso</button>
+        </div>
+        <div class="notice" style="margin-top:12px">El “primer uso” abre un reloj de consumo estimado para saber si esa caja/rollo tomado alcanza durante el turno.</div>
       </div>
       <div class="panel">
-        <h2>Consumos registrados</h2>
-        <p class="sub">Estos tickets actualizan consumo validado por L7 o L8 y pueden bajar el stock simulado.</p>
+        <h2>Actividad de línea</h2>
+        <p class="sub">Tomas en tiempo real, primeros usos abiertos y consumos de cierre de turno.</p>
+        <h3>Tomas registradas</h3>
+        <div id="takeTickets"></div>
+        <h3 style="margin-top:14px">Primeros usos abiertos</h3>
+        <div id="firstUseTickets"></div>
+        <h3 style="margin-top:14px">Consumos registrados</h3>
         <div id="consumptionTickets"></div>
       </div>
     </div>
@@ -145,7 +176,6 @@ body{margin:0;background:radial-gradient(circle at top left,#16213d 0,#0b1020 35
   </section>
 </div>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-<!-- Firebase compat SDK: permite sincronizar tickets entre computadoras desde GitHub Pages -->
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 <script>
@@ -221,18 +251,15 @@ const usageMap = {
 const ALLIDS = [...BOTH,...L7ONLY,...L8ONLY].map(x=>x.toUpperCase());
 function belongs(id){id=id.toUpperCase(); if(BOTH.includes(id)) return "L7 + L8"; if(L7ONLY.includes(id)) return "L7"; if(L8ONLY.includes(id)) return "L8"; return "N/D"}
 function defaultState(){
-  return {params:{inspectionH:2,resupplyMin:30,safetyPct:15,defaultPack:100,l7Rate:20,l8Rate:20}, components: ALLIDS.map(id=>({id, desc:(descMap[id]||id), unit:(usageMap[id]?.u||"UDS"), useL7:(usageMap[id]?.l7||0), useL8:(usageMap[id]?.l8||0), belongs:belongs(id), stock: Math.round((usageMap[id]?.u==="M"?50:500) + Math.random()*700), pack:(usageMap[id]?.u==="M"?25:100), manualCritical: BOTH.includes(id), erpConsumptionH:0, erpStock:null})), supplyTickets:[], consumptionTickets:[], logs:[]}
+  return {params:{inspectionH:2,resupplyMin:30,safetyPct:15,defaultPack:100,l7Rate:20,l8Rate:20}, components: ALLIDS.map(id=>({id, desc:(descMap[id]||id), unit:(usageMap[id]?.u||"UDS"), useL7:(usageMap[id]?.l7||0), useL8:(usageMap[id]?.l8||0), belongs:belongs(id), stock: Math.round((usageMap[id]?.u==="M"?50:500) + Math.random()*700), pack:(usageMap[id]?.u==="M"?25:100), manualCritical: BOTH.includes(id), erpConsumptionH:0, erpStock:null})), supplyTickets:[], consumptionTickets:[], takeTickets:[], firstUseTickets:[], logs:[], audioEnabled:false, lastAlertSignature:""}
 }
-// ============================================================
-// FIREBASE / SINCRONIZACIÓN EN VIVO
-// ============================================================
-// 1) Crea un proyecto en Firebase.
-// 2) Activa Firestore Database.
-// 3) Copia aquí tu firebaseConfig.
-// 4) Cambia USE_FIREBASE a true.
-//
-// Mientras USE_FIREBASE = false, el tablero sigue guardando solo en este navegador.
-const USE_FIREBASE = true;
+// ==========================================================
+// FIREBASE / SINCRONIZACIÓN MULTIUSUARIO
+// ==========================================================
+// 1) Cambia USE_FIREBASE a true.
+// 2) Pega aquí el objeto firebaseConfig de Firebase Console.
+// 3) Sube este archivo como index.html a GitHub Pages.
+const USE_FIREBASE = false;
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyAS9yEZJUu_areBw_eqliXGGR8nO70W5c8",
   authDomain: "andon-2.firebaseapp.com",
@@ -242,35 +269,84 @@ const FIREBASE_CONFIG = {
   appId: "1:804915902143:web:5533f0b9f7a2d0055af80a",
   measurementId: "G-78YV8G3YBW"
 };
-const FIREBASE_DOC_PATH = "dashboards/andon_l7_l8"; // un solo estado compartido para todas
+const FIREBASE_DOC_PATH = "dashboards/andon-l7-l8";
+
 let db = null;
-let cloudReady = false;
-let applyingRemoteState = false;
-let cloudSaveTimer = null;
-
+let remoteReady = false;
+let applyingRemote = false;
+let saveTimer = null;
 let state = JSON.parse(localStorage.getItem("andonL7L8EditableNeedsState")||"null") || defaultState();
-function save(){
-  // Guarda siempre local como respaldo.
-  localStorage.setItem("andonL7L8EditableNeedsState", JSON.stringify(state));
-  document.getElementById('saveState').textContent = cloudReady
-    ? 'Sincronizando...'
-    : 'Guardado local '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+// Migración suave: si ya existía un estado anterior en Firebase/local, añade nuevas listas sin borrar datos.
+state.takeTickets = state.takeTickets || [];
+state.firstUseTickets = state.firstUseTickets || [];
+state.audioEnabled = state.audioEnabled || false;
+state.lastAlertSignature = state.lastAlertSignature || "";
+let audioCtx = null;
+let lastAlertCount = 0;
 
-  // Si Firebase está activo, sube el estado compartido.
-  if(cloudReady && !applyingRemoteState){
-    clearTimeout(cloudSaveTimer);
-    cloudSaveTimer = setTimeout(async ()=>{
-      try{
-        await db.doc(FIREBASE_DOC_PATH).set({
-          state,
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        }, {merge:true});
-        document.getElementById('saveState').textContent='Firebase sincronizado '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
-      }catch(err){
-        console.error('Error guardando en Firebase', err);
-        document.getElementById('saveState').textContent='Error Firebase: revisa permisos';
+function firebaseIsConfigured(){
+  return USE_FIREBASE && FIREBASE_CONFIG.apiKey && !String(FIREBASE_CONFIG.apiKey).includes('PON_AQUI') && FIREBASE_CONFIG.projectId && !String(FIREBASE_CONFIG.projectId).includes('PON_AQUI');
+}
+function setSyncStatus(txt, ok=true){
+  const el=document.getElementById('saveState');
+  if(el) el.textContent = txt;
+  const dot=document.querySelector('.dot');
+  if(dot){ dot.style.background = ok ? 'var(--green)' : 'var(--orange)'; dot.style.boxShadow = ok ? '0 0 16px var(--green)' : '0 0 16px var(--orange)'; }
+}
+function initFirebase(){
+  if(!firebaseIsConfigured()){
+    setSyncStatus('Guardado local · Firebase no configurado', false);
+    return;
+  }
+  try{
+    if(!firebase.apps.length){ firebase.initializeApp(FIREBASE_CONFIG); }
+    db = firebase.firestore();
+    remoteReady = true;
+    setSyncStatus('Conectando a Firebase…', false);
+    db.doc(FIREBASE_DOC_PATH).onSnapshot((snap)=>{
+      if(snap.exists){
+        const data = snap.data();
+        if(data && data.state){
+          applyingRemote = true;
+          state = data.state;
+          localStorage.setItem("andonL7L8EditableNeedsState", JSON.stringify(state));
+          render();
+          applyingRemote = false;
+          setSyncStatus('Sincronizado en vivo '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}), true);
+        }
+      } else {
+        // Primer usuario: crea el documento compartido con el estado actual.
+        save(true);
       }
-    }, 450);
+    }, (err)=>{
+      console.error('Firebase listener error', err);
+      setSyncStatus('Error Firebase: revisa reglas/config', false);
+    });
+  }catch(e){
+    console.error('Firebase init error', e);
+    setSyncStatus('Firebase no inició', false);
+  }
+}
+function save(force=false){
+  localStorage.setItem("andonL7L8EditableNeedsState", JSON.stringify(state));
+  if(applyingRemote && !force) return;
+  const stamp = new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+  if(remoteReady && db){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(()=>{
+      db.doc(FIREBASE_DOC_PATH).set({
+        state,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAtLocal: new Date().toISOString()
+      }, {merge:true}).then(()=>{
+        setSyncStatus('Sincronizado '+stamp, true);
+      }).catch((err)=>{
+        console.error('Firebase save error', err);
+        setSyncStatus('No se pudo guardar en Firebase', false);
+      });
+    }, force ? 0 : 250);
+  } else {
+    setSyncStatus('Guardado local '+stamp, false);
   }
 }
 function resetAll(){ if(confirm('¿Reiniciar datos demo y tickets?')){ state=defaultState(); save(); render(); } }
@@ -310,9 +386,47 @@ function calc(c){
 }
 function sortedComponents(){ return [...state.components].sort((a,b)=>{ const ca=calc(a), cb=calc(b); const ord={Agotado:0,Reorden:1,'Cerca ROP':2,OK:3,'Sin dato':4}; return (ord[ca.status]-ord[cb.status]) || (ca.ratio-cb.ratio) || a.id.localeCompare(b.id); }); }
 function chip(status,color){return `<span class="badge ${color}">${status}</span>`}
+
+function productiveRemainingHours(now=new Date()){
+  const start=new Date(now); start.setHours(8,0,0,0);
+  const end=new Date(now); end.setHours(17,35,0,0);
+  if(now>=end) return 0;
+  if(now<=start) return SHIFT_HOURS;
+  const total=end-start;
+  const remaining=end-now;
+  return Math.max(0, SHIFT_HOURS*(remaining/total));
+}
+function neededRestOfShift(c){ const r=calc(c); return r.value * productiveRemainingHours(); }
+function willLastShift(c){ return c.stock >= neededRestOfShift(c); }
+function enableAlertSound(){
+  state.audioEnabled = true;
+  try{ audioCtx = audioCtx || new (window.AudioContext||window.webkitAudioContext)(); audioCtx.resume && audioCtx.resume(); }catch(e){}
+  const d=document.getElementById('soundDot'); if(d) d.classList.add('on');
+  softNotify(); save();
+}
+function softNotify(){
+  if(!state.audioEnabled) return;
+  try{
+    audioCtx = audioCtx || new (window.AudioContext||window.webkitAudioContext)();
+    const o=audioCtx.createOscillator(); const g=audioCtx.createGain();
+    o.type='sine'; o.frequency.setValueAtTime(660,audioCtx.currentTime);
+    g.gain.setValueAtTime(0.0001,audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.035,audioCtx.currentTime+0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.22);
+    o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+0.24);
+  }catch(e){}
+}
+function checkAlertSound(){
+  const alertIds=state.components.filter(c=>{const r=calc(c); return ['Agotado','Reorden'].includes(r.status) || !willLastShift(c);}).map(c=>c.id+':'+calc(c).status+':'+Math.round(c.stock)).sort();
+  const sig=alertIds.join('|');
+  if(state.lastAlertSignature && sig && sig!==state.lastAlertSignature && alertIds.length>=lastAlertCount){ softNotify(); }
+  state.lastAlertSignature=sig; lastAlertCount=alertIds.length;
+  const d=document.getElementById('soundDot'); if(d) d.classList.toggle('on', !!state.audioEnabled);
+}
+
 function renderKpis(){ const rows=state.components.map(c=>calc(c)); const k=[['Agotados',rows.filter(x=>x.status==='Agotado').length,'red'],['Debajo ROP',rows.filter(x=>x.status==='Reorden').length,'orange'],['Cerca ROP',rows.filter(x=>x.status==='Cerca ROP').length,'yellow'],['OK',rows.filter(x=>x.status==='OK').length,'green'],['Tickets abiertos',state.supplyTickets.filter(t=>!['Cerrado','Cancelado'].includes(t.status)).length,'blue']]; document.getElementById('kpis').innerHTML=k.map(x=>`<div class="kpi ${x[2]}"><b>${x[1]}</b><span>${x[0]}</span></div>`).join(''); }
-function renderBattery(){ const rows=sortedComponents(); document.getElementById('batteryWall').innerHTML=rows.map(c=>{ const r=calc(c); return `<div class="battery ${r.color} ${['Agotado','Reorden'].includes(r.status)?'critical':''}" title="${c.id}"><div class="fill" style="height:${r.fill}%"></div><div class="b-content"><div class="code">${c.id}</div><span class="line-tag">${c.belongs}</span><div class="b-num">${fmt(c.stock, c.unit==='M'?1:0)} ${unitLabel(c)}</div><div class="b-label">disponibles · ${chip(r.status,r.color)}</div><div class="b-mini"><span>ROP ${fmt(r.rop, c.unit==='M'?1:0)}</span><span>${r.boxes} cajas/rollos</span></div></div></div>`}).join(''); }
-function renderAlerts(){ const alerts=sortedComponents().filter(c=>['Agotado','Reorden','Cerca ROP'].includes(calc(c).status)); if(!alerts.length){document.getElementById('alertsTable').innerHTML='<div class="empty">Sin alertas de surtimiento.</div>';return} document.getElementById('alertsTable').innerHTML=`<div class="table-wrap"><table><thead><tr><th>Estado</th><th>Código</th><th>Uso</th><th class="num">Hay</th><th class="num">ROP</th><th class="num">Surtir</th><th></th></tr></thead><tbody>${alerts.map(c=>{const r=calc(c);return `<tr><td>${chip(r.status,r.color)}</td><td><b>${c.id}</b><br><span class="small">${r.crit} · ${r.source}</span></td><td>${c.belongs}</td><td class="num">${fmt(c.stock)} ${unitLabel(c)}</td><td class="num">${fmt(r.rop)} ${unitLabel(c)}</td><td class="num">${fmt(r.qtyS)} ${unitLabel(c)}<br><span class="small">${r.boxes} cajas/rollos</span></td><td><button class="btn smallbtn" onclick="createSupplyTicket('${c.id}')">Surtimiento</button></td></tr>`}).join('')}</tbody></table></div>`; }
+function renderBattery(){ const rows=sortedComponents(); document.getElementById('batteryWall').innerHTML=rows.map(c=>{ const r=calc(c); const need=neededRestOfShift(c); const lasts=willLastShift(c); return `<div class="battery ${r.color} ${['Agotado','Reorden'].includes(r.status)?'critical':''} ${!lasts?'noalcanzar':''}" title="${c.id}"><div class="fill" style="height:${r.fill}%"></div><div class="b-content"><div class="code">${c.id}</div><span class="line-tag">${c.belongs}</span><div class="b-num">${fmt(c.stock, c.unit==='M'?1:0)} ${unitLabel(c)}</div><div class="b-label">disponibles · ${chip(r.status,r.color)}</div><div class="b-mini"><span>ROP ${fmt(r.rop, c.unit==='M'?1:0)}</span><span>${lasts?'Alcanza turno':'No alcanza turno'}</span></div><div class="b-mini"><span>Restante turno</span><span>${fmt(need,c.unit==='M'?1:0)} ${unitLabel(c)}</span></div></div></div>`}).join(''); }
+function renderAlerts(){ const alerts=sortedComponents().filter(c=>['Agotado','Reorden','Cerca ROP'].includes(calc(c).status) || !willLastShift(c)); if(!alerts.length){document.getElementById('alertsTable').innerHTML='<div class="empty">Sin alertas de surtimiento.</div>';return} document.getElementById('alertsTable').innerHTML=`<div class="risk-strip"><div class="risk-box"><b>${productiveRemainingHours().toFixed(1)} h</b><span>restantes turno</span></div><div class="risk-box"><b>${alerts.filter(c=>!willLastShift(c)).length}</b><span>no alcanzan</span></div><div class="risk-box"><b>${alerts.filter(c=>['Agotado','Reorden'].includes(calc(c).status)).length}</b><span>requieren ROP</span></div></div><div class="table-wrap"><table><thead><tr><th>Estado</th><th>Código</th><th>Uso</th><th class="num">Hay</th><th class="num">Necesario resto turno</th><th class="num">ROP</th><th class="num">Surtir</th><th></th></tr></thead><tbody>${alerts.map(c=>{const r=calc(c); const need=neededRestOfShift(c); const last=willLastShift(c); return `<tr><td>${chip(r.status,r.color)}<br>${!last?'<span class="badge red">No alcanza turno</span>':''}</td><td><b>${c.id}</b><br><span class="small">${r.crit} · ${r.source}</span></td><td>${c.belongs}</td><td class="num">${fmt(c.stock)} ${unitLabel(c)}</td><td class="num">${fmt(need,c.unit==='M'?1:0)} ${unitLabel(c)}</td><td class="num">${fmt(r.rop)} ${unitLabel(c)}</td><td class="num">${fmt(r.qtyS)} ${unitLabel(c)}<br><span class="small">${r.boxes} cajas/rollos</span></td><td><button class="btn smallbtn" onclick="createSupplyTicket('${c.id}')">Surtimiento</button></td></tr>`}).join('')}</tbody></table></div>`; }
 function folio(prefix){return prefix+'-'+new Date().toISOString().slice(2,10).replaceAll('-','')+'-'+String(Math.floor(Math.random()*9000)+1000)}
 function addLog(type, folio, id, event, detail={}){ state.logs.unshift({time:new Date().toLocaleString('es-MX'),type,folio,id,event,...detail}); }
 function createSupplyTicket(id){ const c=state.components.find(x=>x.id===id); const r=calc(c); const open=state.supplyTickets.find(t=>t.id===id&&!['Cerrado','Cancelado'].includes(t.status)); if(open && !confirm('Ya hay un ticket abierto para este componente. ¿Crear otro?')) return; const t={folio:folio('SUR'),id,unit:c.unit,status:'Pendiente almacén',requested:+r.qtyS.toFixed(3),requestedBoxes:r.boxes,prepared:0,preparedBoxes:0,delivered:0,deliveredBoxes:0,responsible:'',created:new Date().toLocaleString('es-MX'),updated:new Date().toLocaleString('es-MX'),incident:''}; state.supplyTickets.unshift(t); addLog('Surtimiento',t.folio,id,'Ticket creado',{newStatus:t.status,qty:t.requested,boxes:t.requestedBoxes}); save(); render(); }
@@ -325,6 +439,37 @@ function advanceSupply(folio){ const t=state.supplyTickets.find(x=>x.folio===fol
 function incidentSupply(folio){ const t=state.supplyTickets.find(x=>x.folio===folio); const type=prompt('Tipo de incidencia: sin stock, cantidad incompleta, material no localizado, retraso, error de captura, otro','cantidad incompleta'); const comment=prompt('Comentario de incidencia','')||''; t.incident=type+' · '+comment; t.status='Incidencia'; t.updated=new Date().toLocaleString('es-MX'); addLog('Incidencia',t.folio,t.id,'Incidencia surtimiento',{newStatus:t.status,incident:type,comment}); save(); render(); }
 function supplyCard(t){ const stages=['Pendiente almacén','Tomado por almacén','Preparando cajas','Salió a picking','Picking resurtido']; const idx=stages.indexOf(t.status); return `<div class="ticket-card"><div class="ticket-top"><div><div class="ticket-folio">${t.folio}</div><div class="small"><b>${t.id}</b> · ${t.unit} · creado ${t.created}</div></div><div>${chip(t.status,t.status==='Incidencia'?'red':t.status==='Cerrado'?'green':'blue')}</div></div><div class="timeline">${stages.map((s,i)=>`<div class="step ${i<=idx||t.status==='Cerrado'?'done':''}">${s}</div>`).join('')}</div><div class="two-col"><div class="small">Solicitado: <b>${fmt(t.requested)} ${t.unit}</b> · ${t.requestedBoxes} cajas/rollos<br>Preparado: <b>${fmt(t.prepared)} ${t.unit}</b> · ${t.preparedBoxes} cajas/rollos<br>Entregado: <b>${fmt(t.delivered)} ${t.unit}</b> · ${t.deliveredBoxes} cajas/rollos</div><div class="small">Responsable: <b>${t.responsible||'—'}</b><br>Actualizado: ${t.updated}<br>${t.incident?`Incidencia: <b>${t.incident}</b>`:''}</div></div><div class="actions" style="margin-top:12px">${!['Cerrado','Incidencia','Cancelado'].includes(t.status)?`<button class="btn smallbtn" onclick="advanceSupply('${t.folio}')">Avanzar</button><button class="btn red smallbtn" onclick="incidentSupply('${t.folio}')">Incidencia</button>`:''}</div></div>` }
 function renderSupplyTickets(){ const open=state.supplyTickets.filter(t=>!['Cerrado','Cancelado'].includes(t.status)); const html=open.length?open.map(supplyCard).join(''):'<div class="empty">No hay tickets abiertos de surtimiento.</div>'; document.getElementById('warehouseTickets').innerHTML=html; document.getElementById('allSupplyTickets').innerHTML=(state.supplyTickets.length?state.supplyTickets.map(supplyCard).join(''):'<div class="empty">Sin tickets de surtimiento.</div>'); }
+
+function createTakeTicket(startUse){
+  const line=document.getElementById('takeLine').value;
+  const id=document.getElementById('takeComp').value;
+  const qty=+document.getElementById('takeQty').value||0;
+  const resp=document.getElementById('takeResp').value||'';
+  if(qty<=0){alert('Pon cantidad tomada.');return}
+  const c=state.components.find(x=>x.id===id);
+  if(c){ c.stock=Math.max(0,(+c.stock||0)-qty); }
+  const fol=folio(startUse?'USO':'TOMA');
+  const t={folio:fol,line,id,unit:c?c.unit:'UDS',qty,status:startUse?'Primer uso abierto':'Tomado',responsible:resp,created:new Date().toLocaleString('es-MX'),startMs:startUse?Date.now():null};
+  state.takeTickets.unshift(t);
+  if(startUse){ state.firstUseTickets.unshift({...t, openedQty:qty, status:'Abierto'}); }
+  addLog('Toma',fol,id,startUse?'Toma + primer uso':'Toma de material',{newStatus:t.status,qty,responsible:resp,comment:`${line} tomó material del rack`});
+  save(); render();
+}
+function renderTakeTickets(){
+  const box=document.getElementById('takeTickets'); if(!box) return;
+  box.innerHTML=state.takeTickets.length?state.takeTickets.slice(0,12).map(t=>`<div class="take-card"><div class="ticket-top"><div><b>${t.folio}</b><div class="small">${t.line} · ${t.id} · ${t.created}</div></div>${chip(t.status,t.status.includes('uso')?'blue':'orange')}</div><div class="small">Tomó: <b>${fmt(t.qty,3)} ${t.unit}</b> · Responsable: <b>${t.responsible||'—'}</b></div></div>`).join(''):'<div class="empty">Sin tomas registradas.</div>';
+}
+function closeFirstUse(folio){
+  const fu=state.firstUseTickets.find(x=>x.folio===folio); if(!fu) return;
+  fu.status='Cerrado'; fu.closed=new Date().toLocaleString('es-MX');
+  addLog('Uso',folio,fu.id,'Primer uso cerrado',{newStatus:'Cerrado',qty:fu.openedQty,responsible:fu.responsible});
+  save(); render();
+}
+function renderFirstUses(){
+  const box=document.getElementById('firstUseTickets'); if(!box) return;
+  const open=state.firstUseTickets.filter(x=>x.status!=='Cerrado');
+  box.innerHTML=open.length?open.map(t=>{ const c=state.components.find(x=>x.id===t.id); const r=c?calc(c):{value:0}; const hrs=(Date.now()-(t.startMs||Date.now()))/3600000; const est=Math.min(t.openedQty, Math.max(0,r.value*hrs)); const rem=Math.max(0,t.openedQty-est); const dur=r.value>0?rem/r.value:Infinity; return `<div class="take-card"><div class="ticket-top"><div><b>${t.folio}</b><div class="small">${t.line} · ${t.id} · abierto ${t.created}</div></div>${chip('En uso','blue')}</div><div class="risk-strip"><div class="risk-box"><b>${fmt(t.openedQty,2)}</b><span>cantidad abierta</span></div><div class="risk-box"><b>${fmt(est,2)}</b><span>consumo estimado</span></div><div class="risk-box"><b>${isFinite(dur)?dur.toFixed(1)+' h':'—'}</b><span>duración estimada</span></div></div><div class="actions"><button class="btn smallbtn secondary" onclick="closeFirstUse('${t.folio}')">Cerrar uso</button></div></div>`}).join(''):'<div class="empty">Sin primeros usos abiertos.</div>';
+}
 function previewConsumption(){ const line=document.getElementById('consumeLine').value; const units=+document.getElementById('consumeUnits').value||0; const rows=state.components.filter(c=>line==='L7'?c.useL7>0:c.useL8>0).map(c=>({id:c.id,unit:c.unit,qty:(line==='L7'?c.useL7:c.useL8)*units, use:(line==='L7'?c.useL7:c.useL8)})); document.getElementById('consumptionPreview').innerHTML=`<div class="table-wrap"><table><thead><tr><th>Componente</th><th class="num">Uso por arnés</th><th class="num">Consumo turno</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${r.id}</td><td class="num">${fmt(r.use,3)} ${r.unit}</td><td class="num">${fmt(r.qty,3)} ${r.unit}</td></tr>`).join('')}</tbody></table></div>`; }
 function createConsumptionTicket(){ const line=document.getElementById('consumeLine').value; const units=+document.getElementById('consumeUnits').value||0; const resp=document.getElementById('consumeResp').value||''; if(units<=0){alert('Pon areneses producidos.');return} const fol=folio('CON'); const details=[]; state.components.forEach(c=>{ const use=line==='L7'?c.useL7:c.useL8; if(use>0){ const qty=use*units; c.stock=Math.max(0,(+c.stock||0)-qty); details.push({id:c.id,unit:c.unit,qty:+qty.toFixed(4)}); }}); const t={folio:fol,line,units,shiftHours:SHIFT_HOURS,status:'Validado',responsible:resp,created:new Date().toLocaleString('es-MX'),details}; state.consumptionTickets.unshift(t); addLog('Consumo',fol,line,`Consumo validado ${line}`,{newStatus:'Validado',qty:units,responsible:resp,comment:`${details.length} componentes afectados`}); save(); render(); }
 function consumptionCard(t){ return `<div class="ticket-card"><div class="ticket-top"><div><div class="ticket-folio">${t.folio}</div><div class="small">${t.line} · ${fmt(t.units,0)} arneses · ${t.shiftHours.toFixed(2)} h productivas · ${t.created}</div></div>${chip(t.status,'green')}</div><div class="small">Responsable: <b>${t.responsible||'—'}</b> · Componentes descontados: ${t.details.length}</div><details style="margin-top:8px"><summary class="small">Ver desglose consumo</summary><div class="table-wrap" style="margin-top:8px"><table><thead><tr><th>Componente</th><th class="num">Cantidad</th></tr></thead><tbody>${t.details.map(d=>`<tr><td>${d.id}</td><td class="num">${fmt(d.qty,3)} ${d.unit}</td></tr>`).join('')}</tbody></table></div></details></div>` }
@@ -370,53 +515,8 @@ function renderMaster(){
       <td>${chip(r.status,r.color)}</td>
     </tr>`}).join('')}</tbody></table></div>`;
 } 
-function populateSelects(){ const opts=state.components.map(c=>`<option value="${c.id}">${c.id} · ${c.desc||c.belongs}</option>`).join(''); document.getElementById('manualSupplyComp').innerHTML=opts; }
-function render(){ state.components.forEach(refreshBelongs); document.getElementById('inspectionH').value=state.params.inspectionH; document.getElementById('resupplyMin').value=state.params.resupplyMin; document.getElementById('safetyPct').value=state.params.safetyPct; document.getElementById('defaultPack').value=state.params.defaultPack; populateSelects(); renderKpis(); renderBattery(); renderAlerts(); renderSupplyTickets(); renderConsumptionTickets(); renderLog(); renderMaster(); }
-function isFirebaseConfigComplete(){
-  return FIREBASE_CONFIG && FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey !== 'PEGAR_AQUI' && FIREBASE_CONFIG.projectId && FIREBASE_CONFIG.projectId !== 'PEGAR_AQUI';
-}
-function setupFirebase(){
-  if(!USE_FIREBASE){
-    document.getElementById('saveState').textContent = 'Guardado local activo';
-    return;
-  }
-  if(!window.firebase){
-    document.getElementById('saveState').textContent = 'Firebase SDK no cargó';
-    return;
-  }
-  if(!isFirebaseConfigComplete()){
-    document.getElementById('saveState').textContent = 'Falta configurar Firebase';
-    return;
-  }
-  try{
-    firebase.initializeApp(FIREBASE_CONFIG);
-    db = firebase.firestore();
-    cloudReady = true;
-    document.getElementById('saveState').textContent = 'Conectando Firebase...';
-
-    db.doc(FIREBASE_DOC_PATH).onSnapshot((snap)=>{
-      const data = snap.data();
-      if(data && data.state){
-        applyingRemoteState = true;
-        state = data.state;
-        localStorage.setItem("andonL7L8EditableNeedsState", JSON.stringify(state));
-        render();
-        document.getElementById('saveState').textContent='Firebase en vivo '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
-        applyingRemoteState = false;
-      }else{
-        // Si el documento aún no existe, sube el estado actual como base.
-        save();
-      }
-    }, (err)=>{
-      console.error('Error leyendo Firebase', err);
-      document.getElementById('saveState').textContent='Sin permisos en Firebase';
-    });
-  }catch(err){
-    console.error('Error iniciando Firebase', err);
-    document.getElementById('saveState').textContent='Error al iniciar Firebase';
-  }
-}
-
+function populateSelects(){ const opts=state.components.map(c=>`<option value="${c.id}">${c.id} · ${c.desc||c.belongs}</option>`).join(''); document.getElementById('manualSupplyComp').innerHTML=opts; if(document.getElementById('takeComp')) document.getElementById('takeComp').innerHTML=opts; }
+function render(){ state.components.forEach(refreshBelongs); document.getElementById('inspectionH').value=state.params.inspectionH; document.getElementById('resupplyMin').value=state.params.resupplyMin; document.getElementById('safetyPct').value=state.params.safetyPct; document.getElementById('defaultPack').value=state.params.defaultPack; populateSelects(); renderKpis(); renderBattery(); renderAlerts(); renderSupplyTickets(); renderTakeTickets(); renderFirstUses(); renderConsumptionTickets(); renderLog(); renderMaster(); checkAlertSound(); }
 // File reading
 async function readFile(file){ if(!file) return []; const name=file.name.toLowerCase(); if(name.endsWith('.csv')){ const text=await file.text(); return csvToRows(text); } if(window.XLSX){ const buf=await file.arrayBuffer(); const wb=XLSX.read(buf,{type:'array'}); return XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''}); } alert('Para XLSX se requiere internet/CDN. Usa CSV si no carga.'); return []; }
 function csvToRows(text){ const lines=text.split(/\r?\n/).filter(Boolean); const headers=lines.shift().split(',').map(x=>x.trim()); return lines.map(l=>{const vals=l.split(','); const o={}; headers.forEach((h,i)=>o[h]=vals[i]); return o}); }
@@ -428,7 +528,7 @@ async function loadFiles(){ const cons=await readFile(document.getElementById('c
 function exportData(){ const rows=state.components.map(c=>{const r=calc(c);return {ID:c.id,Uso:c.belongs,Unidad:c.unit,UsoL7:c.useL7,UsoL8:c.useL8,Stock:c.stock,ConsumoH:r.value,Fuente:r.source,ROP:r.rop,Estado:r.status,Criticidad:r.crit,Impacto:r.impact}}); const csv=[Object.keys(rows[0]).join(','),...rows.map(o=>Object.values(o).map(v=>`"${String(v).replaceAll('"','""')}"`).join(','))].join('\n'); const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download='andon_rop_l7_l8_estado.csv'; a.click(); }
 document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab-btn,.tab').forEach(x=>x.classList.remove('active')); btn.classList.add('active'); document.getElementById(btn.dataset.tab).classList.add('active');}));
 render();
-setupFirebase();
+initFirebase();
 </script>
 </body>
 </html>
