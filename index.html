@@ -13,20 +13,20 @@
 *{box-sizing:border-box}
 body{margin:0;background:radial-gradient(circle at top left,#16213d 0,#0b1020 35%,#080b14 100%);font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)}
 .app{max-width:1480px;margin:0 auto;padding:18px}
-.header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px;padding:18px 20px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(135deg,rgba(56,189[...]
-.header h1{font-size:24px;margin:0;font-weight:900;letter-spacing:-.03em}.header p{margin:4px 0 0;color:var(--muted);font-size:13px}.pill{display:inline-flex;align-items:center;gap:8px;border:1px soli[...]
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.tab-btn{border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.05);color:#cbd5e1;padding:11px 14px;border-radius:16px;cursor:[...]
-.tab{display:none}.tab.active{display:block}.grid{display:grid;gap:14px}.grid-2{grid-template-columns:1.05fr .95fr}.grid-3{grid-template-columns:repeat(3,1fr)}@media(max-width:1000px){.grid-2,.grid-3{[...]
-.panel{background:rgba(18,26,47,.92);border:1px solid rgba(255,255,255,.09);border-radius:24px;padding:16px;box-shadow:var(--shadow)}.panel h2,.panel h3{margin:0 0 12px;font-size:17px}.panel .sub{colo[...]
-.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}@media(max-width:1000px){.kpis{grid-template-columns:repeat(2,1fr)}}.kpi{background:linear-gradient(180deg,rgba(255,2[...]
+.header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px;padding:18px 20px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(135deg,rgba(56,189,248,.16),rgba(18,26,47,.96));border-radius:24px;box-shadow:var(--shadow)}
+.header h1{font-size:24px;margin:0;font-weight:900;letter-spacing:-.03em}.header p{margin:4px 0 0;color:var(--muted);font-size:13px}.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);padding:8px 12px;border-radius:999px;color:#dbeafe;font-size:12px;font-weight:800;white-space:nowrap}.dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 16px var(--green)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.tab-btn{border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.05);color:#cbd5e1;padding:11px 14px;border-radius:16px;cursor:pointer;font-weight:800}.tab-btn.active{background:linear-gradient(135deg,#2563eb,#06b6d4);color:white;border-color:transparent;box-shadow:0 12px 25px rgba(37,99,235,.25)}
+.tab{display:none}.tab.active{display:block}.grid{display:grid;gap:14px}.grid-2{grid-template-columns:1.05fr .95fr}.grid-3{grid-template-columns:repeat(3,1fr)}@media(max-width:1000px){.grid-2,.grid-3{grid-template-columns:1fr}.header{align-items:flex-start;flex-direction:column}}
+.panel{background:rgba(18,26,47,.92);border:1px solid rgba(255,255,255,.09);border-radius:24px;padding:16px;box-shadow:var(--shadow)}.panel h2,.panel h3{margin:0 0 12px;font-size:17px}.panel .sub{color:var(--muted);font-size:12px;margin-top:-6px;margin-bottom:12px}.small{font-size:12px;color:var(--muted)}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}@media(max-width:1000px){.kpis{grid-template-columns:repeat(2,1fr)}}.kpi{background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:13px}.kpi b{display:block;font-size:24px;line-height:1}.kpi span{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-top:5px}.kpi.red b{color:var(--red)}.kpi.orange b{color:var(--orange)}.kpi.yellow b{color:var(--yellow)}.kpi.green b{color:var(--green)}.kpi.blue b{color:var(--blue)}
 /* Battery rack */
-.rack-wrap{position:relative;min-height:520px;overflow:hidden;background:linear-gradient(180deg,#0f172a,#0a0e19);border-radius:24px;border:1px solid rgba(255,255,255,.08);padding:22px 18px}.floor{posi[...]
-.battery{height:118px;border-radius:18px;border:1px solid rgba(255,255,255,.13);background:linear-gradient(145deg,#1f2a44,#101827);position:relative;padding:11px;box-shadow:inset 0 0 0 1px rgba(255,25[...]
-.fill{position:absolute;left:0;right:0;bottom:0;height:30%;opacity:.9;background:var(--green);border-radius:0 0 18px 18px;transition:.25s}.battery.red .fill{background:linear-gradient(180deg,#f87171,#[...]
-.b-content{position:relative;z-index:2}.code{font-weight:900;font-size:10.5px;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.line-tag{display:inline-flex;margin-top:5[...]
-.controls{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}@media(max-width:900px){.controls{grid-template-columns:1fr 1fr}}label{font-size:11px;font-weight:900;text-transf[...]
-.ticket-card{background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.10);border-radius:20px;padding:14px;margin-bottom:12px}.ticket-top{displ[...]
-.notice{border:1px solid rgba(56,189,248,.18);background:rgba(56,189,248,.08);border-radius:16px;padding:12px;color:#dbeafe;font-size:13px}.empty{padding:22px;border:1px dashed rgba(255,255,255,.16);b[...]
+.rack-wrap{position:relative;min-height:520px;overflow:hidden;background:linear-gradient(180deg,#0f172a,#0a0e19);border-radius:24px;border:1px solid rgba(255,255,255,.08);padding:22px 18px}.floor{position:absolute;inset:auto -10% -45% -10%;height:62%;background:repeating-linear-gradient(90deg,rgba(148,163,184,.10) 0 1px,transparent 1px 55px),repeating-linear-gradient(0deg,rgba(148,163,184,.10) 0 1px,transparent 1px 55px);transform:perspective(700px) rotateX(62deg);transform-origin:top;opacity:.45}.rack-title{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.rack-title h2{margin:0;font-size:18px}.battery-wall{position:relative;z-index:3;display:grid;grid-template-columns:repeat(7,minmax(96px,1fr));gap:10px;perspective:1000px}@media(max-width:1200px){.battery-wall{grid-template-columns:repeat(5,minmax(96px,1fr))}}@media(max-width:800px){.battery-wall{grid-template-columns:repeat(2,1fr)}}
+.battery{height:118px;border-radius:18px;border:1px solid rgba(255,255,255,.13);background:linear-gradient(145deg,#1f2a44,#101827);position:relative;padding:11px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03),0 12px 22px rgba(0,0,0,.25);transform:rotateX(4deg);overflow:hidden}.battery:after{content:"";position:absolute;right:14px;top:6px;width:34px;height:7px;border-radius:0 0 8px 8px;background:#334155;border:1px solid rgba(255,255,255,.12)}.battery.critical{animation:pulse 1.3s infinite}@keyframes pulse{0%,100%{box-shadow:0 0 0 rgba(239,68,68,0),0 12px 22px rgba(0,0,0,.25)}50%{box-shadow:0 0 24px rgba(239,68,68,.42),0 12px 22px rgba(0,0,0,.25)}}
+.fill{position:absolute;left:0;right:0;bottom:0;height:30%;opacity:.9;background:var(--green);border-radius:0 0 18px 18px;transition:.25s}.battery.red .fill{background:linear-gradient(180deg,#f87171,#dc2626)}.battery.orange .fill{background:linear-gradient(180deg,#fdba74,#ea580c)}.battery.yellow .fill{background:linear-gradient(180deg,#fde68a,#eab308)}.battery.green .fill{background:linear-gradient(180deg,#86efac,#16a34a)}.battery.gray .fill{background:linear-gradient(180deg,#94a3b8,#475569)}
+.b-content{position:relative;z-index:2}.code{font-weight:900;font-size:10.5px;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.line-tag{display:inline-flex;margin-top:5px;font-size:9px;font-weight:900;border-radius:999px;padding:3px 7px;background:rgba(56,189,248,.14);color:#bae6fd;border:1px solid rgba(56,189,248,.24)}.b-num{font-size:18px;font-weight:950;margin-top:8px}.b-label{font-size:9px;color:var(--muted);text-transform:uppercase}.b-mini{display:flex;justify-content:space-between;margin-top:7px;font-size:10px;color:#dbeafe}.status-chip{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:900;padding:5px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.10)}.status-chip.red{background:rgba(239,68,68,.14);color:#fecaca}.status-chip.orange{background:rgba(251,146,60,.14);color:#fed7aa}.status-chip.yellow{background:rgba(250,204,21,.14);color:#fef08a}.status-chip.green{background:rgba(34,197,94,.14);color:#bbf7d0}.status-chip.gray{background:rgba(100,116,139,.14);color:#cbd5e1}
+.controls{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}@media(max-width:900px){.controls{grid-template-columns:1fr 1fr}}label{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#a7b4d3;display:block;margin-bottom:6px}input,select,textarea{width:100%;background:#0f172a;color:#e2e8f0;border:1px solid #2b3a60;border-radius:13px;padding:10px 11px;outline:none}input:focus,select:focus,textarea:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.12)}button{font-family:inherit}.btn{border:0;border-radius:14px;padding:10px 12px;font-weight:900;cursor:pointer;background:#2563eb;color:white}.btn:hover{filter:brightness(1.1)}.btn.secondary{background:#334155}.btn.green{background:#16a34a}.btn.orange{background:#ea580c}.btn.red{background:#dc2626}.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.14);color:#dbeafe}.btn.smallbtn{padding:7px 9px;font-size:12px;border-radius:10px}.actions{display:flex;gap:7px;flex-wrap:wrap}.table-wrap{overflow:auto;border-radius:18px;border:1px solid rgba(255,255,255,.08)}table{width:100%;border-collapse:collapse;background:rgba(15,23,42,.55)}th,td{padding:10px 11px;text-align:left;border-bottom:1px solid rgba(255,255,255,.07);font-size:12px;vertical-align:middle}th{position:sticky;top:0;background:#111b30;color:#a7b4d3;text-transform:uppercase;font-size:10px;letter-spacing:.07em;z-index:1}tr:hover td{background:rgba(56,189,248,.04)}.num{text-align:right;font-variant-numeric:tabular-nums}.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:900}.badge.red{background:#7f1d1d;color:#fecaca}.badge.orange{background:#7c2d12;color:#fed7aa}.badge.yellow{background:#713f12;color:#fef08a}.badge.green{background:#14532d;color:#bbf7d0}.badge.blue{background:#0c4a6e;color:#bae6fd}.badge.gray{background:#334155;color:#cbd5e1}.badge.purple{background:#4c1d95;color:#ddd6fe}
+.ticket-card{background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.10);border-radius:20px;padding:14px;margin-bottom:12px}.ticket-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.ticket-folio{font-weight:950;font-size:16px}.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:14px 0}.step{text-align:center;font-size:10px;color:#94a3b8;position:relative;padding-top:20px}.step:before{content:"";position:absolute;top:3px;left:50%;transform:translateX(-50%);width:12px;height:12px;border-radius:50%;background:#334155;border:2px solid #475569}.step.done{color:#dbeafe}.step.done:before{background:var(--green);border-color:#86efac;box-shadow:0 0 15px rgba(34,197,94,.35)}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:900px){.two-col{grid-template-columns:1fr}}
+.notice{border:1px solid rgba(56,189,248,.18);background:rgba(56,189,248,.08);border-radius:16px;padding:12px;color:#dbeafe;font-size:13px}.empty{padding:22px;border:1px dashed rgba(255,255,255,.16);border-radius:18px;text-align:center;color:var(--muted)}
 
 /* ── toma material + alert sound ── */
 .alert-sound{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
@@ -56,7 +56,7 @@ body{margin:0;background:radial-gradient(circle at top left,#16213d 0,#0b1020 35
   </div>
 
   <section id="dashboard" class="tab active">
-    <div class="alert-sound"><span id="soundDot" class="sound-dot"></span><button id="soundToggleBtn" class="btn ghost smallbtn" onclick="toggleAlertSound()">Activar sonido</button><button class="btn [...]
+    <div class="alert-sound"><span id="soundDot" class="sound-dot"></span><button id="soundToggleBtn" class="btn ghost smallbtn" onclick="toggleAlertSound()">Activar sonido</button><button class="btn secondary smallbtn" onclick="testAlertSound()">Probar sonido</button><span id="soundStatus" class="small">Sonido desactivado · actívalo con un clic para que el navegador permita audio.</span></div>
     <div class="kpis" id="kpis"></div>
     <div class="grid grid-2">
       <div class="panel">
@@ -100,7 +100,7 @@ body{margin:0;background:radial-gradient(circle at top left,#16213d 0,#0b1020 35
     <div class="grid grid-2">
       <div class="panel">
         <h2>Modo línea · toma de material en tiempo real</h2>
-        <p class="sub">Aquí ya no se registra "consumo diario". La línea solo registra cuando toma material del rack. Esa toma descuenta disponibles al momento y se sincroniza para todas las pan[...]
+        <p class="sub">Aquí ya no se registra “consumo diario”. La línea solo registra cuando toma material del rack. Esa toma descuenta disponibles al momento y se sincroniza para todas las pantallas.</p>
         <div class="controls">
           <div><label>Línea</label><select id="takeLine"><option value="L7">Línea 7</option><option value="L8">Línea 8</option></select></div>
           <div><label>Componente</label><select id="takeComp"></select></div>
@@ -145,7 +145,7 @@ body{margin:0;background:radial-gradient(circle at top left,#16213d 0,#0b1020 35
           <div><label>Piezas/caja default</label><input id="defaultPack" type="number" step="1" value="100" /></div>
         </div>
         <div class="actions"><button class="btn" onclick="saveParams()">Guardar parámetros</button><button class="btn secondary" onclick="resetAll()">Reiniciar demo</button></div>
-        <div class="notice" style="margin-top:12px">Fórmula: ROP = consumo/h × (inspección + tiempo de resurtido) × (1 + seguridad). El consumo validado sale de tickets de consumo por turno; si no[...]
+        <div class="notice" style="margin-top:12px">Fórmula: ROP = consumo/h × (inspección + tiempo de resurtido) × (1 + seguridad). El consumo validado sale de tickets de consumo por turno; si no hay tickets, usa BOM teórico.</div>
       </div>
       <div class="panel">
         <h2>Carga de archivos ERP</h2>
@@ -170,7 +170,7 @@ body{margin:0;background:radial-gradient(circle at top left,#16213d 0,#0b1020 35
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 <script>
 const SHIFT_HOURS = (9*60+35-10-30)/60; // 8:00 a 17:35, dos pausas de 5 y comida 30
-const BOTH = ["1211012313","1HE0083919","1HE0SSBS5E","1VI1804701","1VI2954081","1VI2954101","1VI7816181","1VIT18RDP5","1ZK4487040","1ZK837X038","1ZK9688079","3CB4204001","3CB4204002","3CB4204003","3CB[...]
+const BOTH = ["1211012313","1HE0083919","1HE0SSBS5E","1VI1804701","1VI2954081","1VI2954101","1VI7816181","1VIT18RDP5","1ZK4487040","1ZK837X038","1ZK9688079","3CB4204001","3CB4204002","3CB4204003","3CB4204004","3CB4204005","3CB4204006","3CB4204008","3CB4204010","3CB4204013","3CB4204015","62100000C4"];
 const L7ONLY = ["3CB4204063","3PL3299000L","3CB4204132L"];
 const L8ONLY = ["3CB4204062","3CB4204132R","3PL3299000R"];
 // descMap — descripciones tomadas de CB-4741-01 y CB-4741-02
@@ -241,7 +241,7 @@ const usageMap = {
 const ALLIDS = [...BOTH,...L7ONLY,...L8ONLY].map(x=>x.toUpperCase());
 function belongs(id){id=id.toUpperCase(); if(BOTH.includes(id)) return "L7 + L8"; if(L7ONLY.includes(id)) return "L7"; if(L8ONLY.includes(id)) return "L8"; return "N/D"}
 function defaultState(){
-  return {params:{inspectionH:2,resupplyMin:30,safetyPct:15,defaultPack:100,l7Rate:20,l8Rate:20}, components: ALLIDS.map(id=>({id, desc:(descMap[id]||id), unit:(usageMap[id]?.u||"UDS"), useL7:(usageMa[...]
+  return {params:{inspectionH:2,resupplyMin:30,safetyPct:15,defaultPack:100,l7Rate:20,l8Rate:20}, components: ALLIDS.map(id=>({id, desc:(descMap[id]||id), unit:(usageMap[id]?.u||"UDS"), useL7:(usageMap[id]?.l7||0), useL8:(usageMap[id]?.l8||0), belongs:belongs(id), stock: Math.round((usageMap[id]?.u==="M"?50:500) + Math.random()*700), pack:(usageMap[id]?.u==="M"?25:100), manualCritical: BOTH.includes(id), erpConsumptionH:0, erpStock:null})), supplyTickets:[], consumptionTickets:[], takeTickets:[], firstUseTickets:[], logs:[], audioEnabled:false, lastAlertSignature:""}
 }
 // ==========================================================
 // FIREBASE / SINCRONIZACIÓN MULTIUSUARIO
@@ -355,7 +355,7 @@ function updateComponent(i, field, value){
   refreshBelongs(c);
   save(); render();
 }
-function paramsFromInputs(){ state.params.inspectionH=+document.getElementById('inspectionH').value||2; state.params.resupplyMin=+document.getElementById('resupplyMin').value||30; state.params.safetyP[...]
+function paramsFromInputs(){ state.params.inspectionH=+document.getElementById('inspectionH').value||2; state.params.resupplyMin=+document.getElementById('resupplyMin').value||30; state.params.safetyPct=+document.getElementById('safetyPct').value||0; state.params.defaultPack=+document.getElementById('defaultPack').value||100; }
 function saveParams(){ paramsFromInputs(); save(); render(); }
 function consumptionFromTicketsH(id){
   const rows=state.consumptionTickets.filter(t=>t.id===id && t.status==='Validado' && t.qty>0);
@@ -363,18 +363,18 @@ function consumptionFromTicketsH(id){
   return rows.reduce((s,t)=>s+(t.qty/SHIFT_HOURS),0)/rows.length;
 }
 function theoreticalConsumptionH(c){ return (c.useL7*(state.params.l7Rate||20)) + (c.useL8*(state.params.l8Rate||20)); }
-function usedConsumptionH(c){ const vt=consumptionFromTicketsH(c.id); if(vt>0) return {value:vt, source:'Tickets'}; if(c.erpConsumptionH>0) return {value:c.erpConsumptionH, source:'ERP'}; return {valu[...]
+function usedConsumptionH(c){ const vt=consumptionFromTicketsH(c.id); if(vt>0) return {value:vt, source:'Tickets'}; if(c.erpConsumptionH>0) return {value:c.erpConsumptionH, source:'ERP'}; return {value:theoreticalConsumptionH(c), source:'BOM'}; }
 function calc(c){
-  const cons=usedConsumptionH(c); const protection=(state.params.inspectionH||2)+((state.params.resupplyMin||30)/60); const rop=cons.value*protection*(1+(state.params.safetyPct||0)/100); const ratio=r[...]
-  let status='OK', color='green'; if(c.stock<=0){status='Agotado';color='red'} else if(rop<=0){status='Sin dato'; color='gray'} else if(c.stock<=rop){status='Reorden'; color:'red'} else if(c.stock<=ro[...]
+  const cons=usedConsumptionH(c); const protection=(state.params.inspectionH||2)+((state.params.resupplyMin||30)/60); const rop=cons.value*protection*(1+(state.params.safetyPct||0)/100); const ratio=rop>0?c.stock/rop:999;
+  let status='OK', color='green'; if(c.stock<=0){status='Agotado';color='red'} else if(rop<=0){status='Sin dato'; color='gray'} else if(c.stock<=rop){status='Reorden'; color='red'} else if(c.stock<=rop*1.25){status='Cerca ROP'; color='yellow'} else {status='OK'; color='green'}
   let fill = Math.max(4, Math.min(100, ratio*100)); if(status==='Agotado') fill=2;
   const boxes = c.pack>0 ? Math.ceil(Math.max(rop*1.5-c.stock,0)/c.pack) : 0;
   const qtyS = Math.max(rop*1.5-c.stock,0);
   const critScore=(c.belongs==='L7 + L8'?3:1)+(status==='Reorden'?3:0)+(status==='Agotado'?5:0)+(c.unit==='M'?1:0)+(c.manualCritical?2:0)+(cons.value>100?1:0);
   const crit=critScore>=7?'Alta':critScore>=4?'Media':'Baja';
-  return {...cons, rop, ratio, status, color, fill, boxes, qtyS, crit, impact: c.belongs==='L7 + L8'?'Riesgo de afectar ambos productos':c.belongs==='L7'?'Riesgo de afectar producto L7':c.belongs==='L[...]
+  return {...cons, rop, ratio, status, color, fill, boxes, qtyS, crit, impact: c.belongs==='L7 + L8'?'Riesgo de afectar ambos productos':c.belongs==='L7'?'Riesgo de afectar producto L7':c.belongs==='L8'?'Riesgo de afectar producto L8':'Sin clasificación'};
 }
-function sortedComponents(){ return [...state.components].sort((a,b)=>{ const ca=calc(a), cb=calc(b); const ord={Agotado:0,Reorden:1,'Cerca ROP':2,OK:3,'Sin dato':4}; return (ord[ca.status]-ord[cb.sta[...]
+function sortedComponents(){ return [...state.components].sort((a,b)=>{ const ca=calc(a), cb=calc(b); const ord={Agotado:0,Reorden:1,'Cerca ROP':2,OK:3,'Sin dato':4}; return (ord[ca.status]-ord[cb.status]) || (ca.ratio-cb.ratio) || a.id.localeCompare(b.id); }); }
 function chip(status,color){return `<span class="badge ${color}">${status}</span>`}
 
 function productiveRemainingHours(now=new Date()){
@@ -428,29 +428,29 @@ async function softNotify(force=false){
     const ok=await ensureAudioContext(); if(!ok) return;
     const now=audioCtx.currentTime;
     const master=audioCtx.createGain();
-    master.gain.setValueAtTime(0.001, now);
-    master.gain.exponentialRampToValueAtTime(0.25, now+0.04);
-    master.gain.exponentialRampToValueAtTime(0.001, now+0.40);
+    master.gain.setValueAtTime(0.0001, now);
+    master.gain.exponentialRampToValueAtTime(0.055, now+0.02);
+    master.gain.exponentialRampToValueAtTime(0.0001, now+0.55);
     master.connect(audioCtx.destination);
 
-    // dos notas audibles en rango de 600-900Hz (óptimo para detectar alertas)
-    const freqs=[600, 900];
+    // dos notas suaves, tipo notificación; no alarma de planta
+    const freqs=[740, 980];
     freqs.forEach((f,i)=>{
       const o=audioCtx.createOscillator();
       const g=audioCtx.createGain();
-      const t=now + i*0.12;
+      const t=now + i*0.16;
       o.type='sine';
       o.frequency.setValueAtTime(f,t);
-      g.gain.setValueAtTime(0.001,t);
-      g.gain.exponentialRampToValueAtTime(0.35,t+0.025);
-      g.gain.exponentialRampToValueAtTime(0.001,t+0.15);
+      g.gain.setValueAtTime(0.0001,t);
+      g.gain.exponentialRampToValueAtTime(0.7,t+0.015);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+0.12);
       o.connect(g); g.connect(master);
-      o.start(t); o.stop(t+0.12);
+      o.start(t); o.stop(t+0.14);
     });
   }catch(e){ console.warn('No sonó la alerta', e); }
 }
 function checkAlertSound(){
-  const alertIds=state.components.filter(c=>{const r=calc(c); return ['Agotado','Reorden'].includes(r.status) || !willLastShift(c);}).map(c=>c.id+':'+calc(c).status+':'+Math.round(c.stock)).sort());
+  const alertIds=state.components.filter(c=>{const r=calc(c); return ['Agotado','Reorden'].includes(r.status) || !willLastShift(c);}).map(c=>c.id+':'+calc(c).status+':'+Math.round(c.stock)).sort();
   const sig=alertIds.join('|');
   const hasNewSignature = state.lastAlertSignature && sig && sig!==state.lastAlertSignature;
   const increasedAlerts = alertIds.length > lastAlertCount;
@@ -460,21 +460,21 @@ function checkAlertSound(){
   updateSoundUI();
 }
 
-function renderKpis(){ const rows=state.components.map(c=>calc(c)); const k=[['Agotados',rows.filter(x=>x.status==='Agotado').length,'red'],['Debajo ROP',rows.filter(x=>x.status==='Reorden').length,'o[...]
-function renderBattery(){ const rows=sortedComponents(); document.getElementById('batteryWall').innerHTML=rows.map(c=>{ const r=calc(c); const need=neededRestOfShift(c); const lasts=willLastShift(c); [...]
-function renderAlerts(){ const alerts=sortedComponents().filter(c=>['Agotado','Reorden','Cerca ROP'].includes(calc(c).status) || !willLastShift(c)); if(!alerts.length){document.getElementById('alertsT[...]
+function renderKpis(){ const rows=state.components.map(c=>calc(c)); const k=[['Agotados',rows.filter(x=>x.status==='Agotado').length,'red'],['Debajo ROP',rows.filter(x=>x.status==='Reorden').length,'orange'],['Cerca ROP',rows.filter(x=>x.status==='Cerca ROP').length,'yellow'],['OK',rows.filter(x=>x.status==='OK').length,'green'],['Tickets abiertos',state.supplyTickets.filter(t=>!['Cerrado','Cancelado'].includes(t.status)).length,'blue']]; document.getElementById('kpis').innerHTML=k.map(x=>`<div class="kpi ${x[2]}"><b>${x[1]}</b><span>${x[0]}</span></div>`).join(''); }
+function renderBattery(){ const rows=sortedComponents(); document.getElementById('batteryWall').innerHTML=rows.map(c=>{ const r=calc(c); const need=neededRestOfShift(c); const lasts=willLastShift(c); return `<div class="battery ${r.color} ${['Agotado','Reorden'].includes(r.status)?'critical':''} ${!lasts?'noalcanzar':''}" title="${c.id}"><div class="fill" style="height:${r.fill}%"></div><div class="b-content"><div class="code">${c.id}</div><span class="line-tag">${c.belongs}</span><div class="b-num">${fmt(c.stock, c.unit==='M'?1:0)} ${unitLabel(c)}</div><div class="b-label">disponibles · ${chip(r.status,r.color)}</div><div class="b-mini"><span>ROP ${fmt(r.rop, c.unit==='M'?1:0)}</span><span>${lasts?'Alcanza turno':'No alcanza turno'}</span></div><div class="b-mini"><span>Restante turno</span><span>${fmt(need,c.unit==='M'?1:0)} ${unitLabel(c)}</span></div></div></div>`}).join(''); }
+function renderAlerts(){ const alerts=sortedComponents().filter(c=>['Agotado','Reorden','Cerca ROP'].includes(calc(c).status) || !willLastShift(c)); if(!alerts.length){document.getElementById('alertsTable').innerHTML='<div class="empty">Sin alertas de surtimiento.</div>';return} document.getElementById('alertsTable').innerHTML=`<div class="risk-strip"><div class="risk-box"><b>${productiveRemainingHours().toFixed(1)} h</b><span>restantes turno</span></div><div class="risk-box"><b>${alerts.filter(c=>!willLastShift(c)).length}</b><span>no alcanzan</span></div><div class="risk-box"><b>${alerts.filter(c=>['Agotado','Reorden'].includes(calc(c).status)).length}</b><span>requieren ROP</span></div></div><div class="table-wrap"><table><thead><tr><th>Estado</th><th>Código</th><th>Uso</th><th class="num">Hay</th><th class="num">Necesario resto turno</th><th class="num">ROP</th><th class="num">Surtir</th><th></th></tr></thead><tbody>${alerts.map(c=>{const r=calc(c); const need=neededRestOfShift(c); const last=willLastShift(c); return `<tr><td>${chip(r.status,r.color)}<br>${!last?'<span class="badge red">No alcanza turno</span>':''}</td><td><b>${c.id}</b><br><span class="small">${r.crit} · ${r.source}</span></td><td>${c.belongs}</td><td class="num">${fmt(c.stock)} ${unitLabel(c)}</td><td class="num">${fmt(need,c.unit==='M'?1:0)} ${unitLabel(c)}</td><td class="num">${fmt(r.rop)} ${unitLabel(c)}</td><td class="num">${fmt(r.qtyS)} ${unitLabel(c)}<br><span class="small">${r.boxes} cajas/rollos</span></td><td><button class="btn smallbtn" onclick="createSupplyTicket('${c.id}')">Surtimiento</button></td></tr>`}).join('')}</tbody></table></div>`; }
 function folio(prefix){return prefix+'-'+new Date().toISOString().slice(2,10).replaceAll('-','')+'-'+String(Math.floor(Math.random()*9000)+1000)}
 function addLog(type, folio, id, event, detail={}){ state.logs.unshift({time:new Date().toLocaleString('es-MX'),type,folio,id,event,...detail}); }
-function createSupplyTicket(id){ const c=state.components.find(x=>x.id===id); const r=calc(c); const open=state.supplyTickets.find(t=>t.id===id&&!['Cerrado','Cancelado'].includes(t.status)); if(open &[...]
-function createManualSupplyTicket(){ const id=document.getElementById('manualSupplyComp').value; const c=state.components.find(x=>x.id===id); const qty=+document.getElementById('manualSupplyQty').valu[...]
-function advanceSupply(folio){ const t=state.supplyTickets.find(x=>x.folio===folio); const old=t.status; let next={ 'Pendiente almacén':'Tomado por almacén','Tomado por almacén':'Preparando cajas',[...]
+function createSupplyTicket(id){ const c=state.components.find(x=>x.id===id); const r=calc(c); const open=state.supplyTickets.find(t=>t.id===id&&!['Cerrado','Cancelado'].includes(t.status)); if(open && !confirm('Ya hay un ticket abierto para este componente. ¿Crear otro?')) return; const t={folio:folio('SUR'),id,unit:c.unit,status:'Pendiente almacén',requested:+r.qtyS.toFixed(3),requestedBoxes:r.boxes,prepared:0,preparedBoxes:0,delivered:0,deliveredBoxes:0,responsible:'',created:new Date().toLocaleString('es-MX'),updated:new Date().toLocaleString('es-MX'),incident:''}; state.supplyTickets.unshift(t); addLog('Surtimiento',t.folio,id,'Ticket creado',{newStatus:t.status,qty:t.requested,boxes:t.requestedBoxes}); save(); render(); }
+function createManualSupplyTicket(){ const id=document.getElementById('manualSupplyComp').value; const c=state.components.find(x=>x.id===id); const qty=+document.getElementById('manualSupplyQty').value||0; const boxes=+document.getElementById('manualSupplyBoxes').value||Math.ceil(qty/(c.pack||state.params.defaultPack||100)); const resp=document.getElementById('manualSupplyResp').value||''; const t={folio:folio('SUR'),id,unit:c.unit,status:'Pendiente almacén',requested:qty,requestedBoxes:boxes,prepared:0,preparedBoxes:0,delivered:0,deliveredBoxes:0,responsible:resp,created:new Date().toLocaleString('es-MX'),updated:new Date().toLocaleString('es-MX'),incident:''}; state.supplyTickets.unshift(t); addLog('Surtimiento',t.folio,id,'Ticket manual creado',{newStatus:t.status,qty,boxes,responsible:resp}); save(); render(); }
+function advanceSupply(folio){ const t=state.supplyTickets.find(x=>x.folio===folio); const old=t.status; let next={ 'Pendiente almacén':'Tomado por almacén','Tomado por almacén':'Preparando cajas','Preparando cajas':'Salió a picking','Salió a picking':'Picking resurtido','Picking resurtido':'Cerrado'}[t.status]; if(!next) return;
   let resp=prompt('Responsable:',t.responsible||'')||t.responsible||''; t.responsible=resp;
   if(next==='Preparando cajas'){ t.prepared=+(prompt('Cantidad preparada:',t.requested)||t.requested); t.preparedBoxes=+(prompt('Cajas/rollos preparados:',t.requestedBoxes)||t.requestedBoxes); }
-  if(next==='Picking resurtido'){ t.delivered=+(prompt('Cantidad entregada a picking:',t.prepared||t.requested)||t.prepared||t.requested); t.deliveredBoxes=+(prompt('Cajas/rollos entregados:',t.prepar[...]
-  t.status=next; t.updated=new Date().toLocaleString('es-MX'); addLog('Surtimiento',t.folio,t.id,'Cambio de estado',{oldStatus:old,newStatus:next,qty:t.delivered||t.prepared||t.requested,boxes:t.deliv[...]
-function incidentSupply(folio){ const t=state.supplyTickets.find(x=>x.folio===folio); const type=prompt('Tipo de incidencia: sin stock, cantidad incompleta, material no localizado, retraso, error de c[...]
-function supplyCard(t){ const stages=['Pendiente almacén','Tomado por almacén','Preparando cajas','Salió a picking','Picking resurtido']; const idx=stages.indexOf(t.status); return `<div class="tic[...]
-function renderSupplyTickets(){ const open=state.supplyTickets.filter(t=>!['Cerrado','Cancelado'].includes(t.status)); const html=open.length?open.map(supplyCard).join(''):'<div class="empty">No hay t[...]
+  if(next==='Picking resurtido'){ t.delivered=+(prompt('Cantidad entregada a picking:',t.prepared||t.requested)||t.prepared||t.requested); t.deliveredBoxes=+(prompt('Cajas/rollos entregados:',t.preparedBoxes||t.requestedBoxes)||t.preparedBoxes||t.requestedBoxes); const c=state.components.find(x=>x.id===t.id); if(c){ c.stock=(+c.stock||0)+(+t.delivered||0); } }
+  t.status=next; t.updated=new Date().toLocaleString('es-MX'); addLog('Surtimiento',t.folio,t.id,'Cambio de estado',{oldStatus:old,newStatus:next,qty:t.delivered||t.prepared||t.requested,boxes:t.deliveredBoxes||t.preparedBoxes||t.requestedBoxes,responsible:resp}); save(); render(); }
+function incidentSupply(folio){ const t=state.supplyTickets.find(x=>x.folio===folio); const type=prompt('Tipo de incidencia: sin stock, cantidad incompleta, material no localizado, retraso, error de captura, otro','cantidad incompleta'); const comment=prompt('Comentario de incidencia','')||''; t.incident=type+' · '+comment; t.status='Incidencia'; t.updated=new Date().toLocaleString('es-MX'); addLog('Incidencia',t.folio,t.id,'Incidencia surtimiento',{newStatus:t.status,incident:type,comment}); save(); render(); }
+function supplyCard(t){ const stages=['Pendiente almacén','Tomado por almacén','Preparando cajas','Salió a picking','Picking resurtido']; const idx=stages.indexOf(t.status); return `<div class="ticket-card"><div class="ticket-top"><div><div class="ticket-folio">${t.folio}</div><div class="small"><b>${t.id}</b> · ${t.unit} · creado ${t.created}</div></div><div>${chip(t.status,t.status==='Incidencia'?'red':t.status==='Cerrado'?'green':'blue')}</div></div><div class="timeline">${stages.map((s,i)=>`<div class="step ${i<=idx||t.status==='Cerrado'?'done':''}">${s}</div>`).join('')}</div><div class="two-col"><div class="small">Solicitado: <b>${fmt(t.requested)} ${t.unit}</b> · ${t.requestedBoxes} cajas/rollos<br>Preparado: <b>${fmt(t.prepared)} ${t.unit}</b> · ${t.preparedBoxes} cajas/rollos<br>Entregado: <b>${fmt(t.delivered)} ${t.unit}</b> · ${t.deliveredBoxes} cajas/rollos</div><div class="small">Responsable: <b>${t.responsible||'—'}</b><br>Actualizado: ${t.updated}<br>${t.incident?`Incidencia: <b>${t.incident}</b>`:''}</div></div><div class="actions" style="margin-top:12px">${!['Cerrado','Incidencia','Cancelado'].includes(t.status)?`<button class="btn smallbtn" onclick="advanceSupply('${t.folio}')">Avanzar</button><button class="btn red smallbtn" onclick="incidentSupply('${t.folio}')">Incidencia</button>`:''}</div></div>` }
+function renderSupplyTickets(){ const open=state.supplyTickets.filter(t=>!['Cerrado','Cancelado'].includes(t.status)); const html=open.length?open.map(supplyCard).join(''):'<div class="empty">No hay tickets abiertos de surtimiento.</div>'; document.getElementById('warehouseTickets').innerHTML=html; document.getElementById('allSupplyTickets').innerHTML=(state.supplyTickets.length?state.supplyTickets.map(supplyCard).join(''):'<div class="empty">Sin tickets de surtimiento.</div>'); }
 
 function createTakeTicket(startUse){
   const line=document.getElementById('takeLine').value;
@@ -493,7 +493,7 @@ function createTakeTicket(startUse){
 }
 function renderTakeTickets(){
   const box=document.getElementById('takeTickets'); if(!box) return;
-  box.innerHTML=state.takeTickets.length?state.takeTickets.slice(0,12).map(t=>`<div class="take-card"><div class="ticket-top"><div><b>${t.folio}</b><div class="small">${t.line} · ${t.id} · ${t.creat[...]
+  box.innerHTML=state.takeTickets.length?state.takeTickets.slice(0,12).map(t=>`<div class="take-card"><div class="ticket-top"><div><b>${t.folio}</b><div class="small">${t.line} · ${t.id} · ${t.created}</div></div>${chip(t.status,t.status.includes('uso')?'blue':'orange')}</div><div class="small">Tomó: <b>${fmt(t.qty,3)} ${t.unit}</b> · Responsable: <b>${t.responsible||'—'}</b></div></div>`).join(''):'<div class="empty">Sin tomas registradas.</div>';
 }
 function closeFirstUse(folio){
   const fu=state.firstUseTickets.find(x=>x.folio===folio); if(!fu) return;
@@ -504,13 +504,13 @@ function closeFirstUse(folio){
 function renderFirstUses(){
   const box=document.getElementById('firstUseTickets'); if(!box) return;
   const open=state.firstUseTickets.filter(x=>x.status!=='Cerrado');
-  box.innerHTML=open.length?open.map(t=>{ const c=state.components.find(x=>x.id===t.id); const r=c?calc(c):{value:0}; const hrs=(Date.now()-(t.startMs||Date.now()))/3600000; const est=Math.min(t.opene[...]
+  box.innerHTML=open.length?open.map(t=>{ const c=state.components.find(x=>x.id===t.id); const r=c?calc(c):{value:0}; const hrs=(Date.now()-(t.startMs||Date.now()))/3600000; const est=Math.min(t.openedQty, Math.max(0,r.value*hrs)); const rem=Math.max(0,t.openedQty-est); const dur=r.value>0?rem/r.value:Infinity; return `<div class="take-card"><div class="ticket-top"><div><b>${t.folio}</b><div class="small">${t.line} · ${t.id} · abierto ${t.created}</div></div>${chip('En uso','blue')}</div><div class="risk-strip"><div class="risk-box"><b>${fmt(t.openedQty,2)}</b><span>cantidad abierta</span></div><div class="risk-box"><b>${fmt(est,2)}</b><span>consumo estimado</span></div><div class="risk-box"><b>${isFinite(dur)?dur.toFixed(1)+' h':'—'}</b><span>duración estimada</span></div></div><div class="actions"><button class="btn smallbtn secondary" onclick="closeFirstUse('${t.folio}')">Cerrar uso</button></div></div>`}).join(''):'<div class="empty">Sin primeros usos abiertos.</div>';
 }
-function previewConsumption(){ const line=document.getElementById('consumeLine').value; const units=+document.getElementById('consumeUnits').value||0; const rows=state.components.filter(c=>line==='L7'[...]
-function createConsumptionTicket(){ const line=document.getElementById('consumeLine').value; const units=+document.getElementById('consumeUnits').value||0; const resp=document.getElementById('consumeR[...]
-function consumptionCard(t){ return `<div class="ticket-card"><div class="ticket-top"><div><div class="ticket-folio">${t.folio}</div><div class="small">${t.line} · ${fmt(t.units,0)} arneses · ${t.sh[...]
-function renderConsumptionTickets(){ const el=document.getElementById('consumptionTickets'); if(!el) return; el.innerHTML=state.consumptionTickets.length?state.consumptionTickets.map(consumptionCard).[...]
-function renderLog(){ const inc=state.logs.filter(l=>l.type==='Incidencia'); const byType={}; inc.forEach(l=>{byType[l.incident||'Sin tipo']=(byType[l.incident||'Sin tipo']||0)+1}); document.getElemen[...]
+function previewConsumption(){ const line=document.getElementById('consumeLine').value; const units=+document.getElementById('consumeUnits').value||0; const rows=state.components.filter(c=>line==='L7'?c.useL7>0:c.useL8>0).map(c=>({id:c.id,unit:c.unit,qty:(line==='L7'?c.useL7:c.useL8)*units, use:(line==='L7'?c.useL7:c.useL8)})); document.getElementById('consumptionPreview').innerHTML=`<div class="table-wrap"><table><thead><tr><th>Componente</th><th class="num">Uso por arnés</th><th class="num">Consumo turno</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${r.id}</td><td class="num">${fmt(r.use,3)} ${r.unit}</td><td class="num">${fmt(r.qty,3)} ${r.unit}</td></tr>`).join('')}</tbody></table></div>`; }
+function createConsumptionTicket(){ const line=document.getElementById('consumeLine').value; const units=+document.getElementById('consumeUnits').value||0; const resp=document.getElementById('consumeResp').value||''; if(units<=0){alert('Pon areneses producidos.');return} const fol=folio('CON'); const details=[]; state.components.forEach(c=>{ const use=line==='L7'?c.useL7:c.useL8; if(use>0){ const qty=use*units; c.stock=Math.max(0,(+c.stock||0)-qty); details.push({id:c.id,unit:c.unit,qty:+qty.toFixed(4)}); }}); const t={folio:fol,line,units,shiftHours:SHIFT_HOURS,status:'Validado',responsible:resp,created:new Date().toLocaleString('es-MX'),details}; state.consumptionTickets.unshift(t); addLog('Consumo',fol,line,`Consumo validado ${line}`,{newStatus:'Validado',qty:units,responsible:resp,comment:`${details.length} componentes afectados`}); save(); render(); }
+function consumptionCard(t){ return `<div class="ticket-card"><div class="ticket-top"><div><div class="ticket-folio">${t.folio}</div><div class="small">${t.line} · ${fmt(t.units,0)} arneses · ${t.shiftHours.toFixed(2)} h productivas · ${t.created}</div></div>${chip(t.status,'green')}</div><div class="small">Responsable: <b>${t.responsible||'—'}</b> · Componentes descontados: ${t.details.length}</div><details style="margin-top:8px"><summary class="small">Ver desglose consumo</summary><div class="table-wrap" style="margin-top:8px"><table><thead><tr><th>Componente</th><th class="num">Cantidad</th></tr></thead><tbody>${t.details.map(d=>`<tr><td>${d.id}</td><td class="num">${fmt(d.qty,3)} ${d.unit}</td></tr>`).join('')}</tbody></table></div></details></div>` }
+function renderConsumptionTickets(){ const el=document.getElementById('consumptionTickets'); if(!el) return; el.innerHTML=state.consumptionTickets.length?state.consumptionTickets.map(consumptionCard).join(''):'<div class="empty">Sin consumos registrados todavía.</div>'; }
+function renderLog(){ const inc=state.logs.filter(l=>l.type==='Incidencia'); const byType={}; inc.forEach(l=>{byType[l.incident||'Sin tipo']=(byType[l.incident||'Sin tipo']||0)+1}); document.getElementById('logSummary').innerHTML=`<div class="kpis" style="grid-template-columns:repeat(3,1fr)"><div class="kpi blue"><b>${state.logs.length}</b><span>Eventos</span></div><div class="kpi orange"><b>${state.supplyTickets.length}</b><span>Surtimientos</span></div><div class="kpi red"><b>${inc.length}</b><span>Incidencias</span></div></div>${Object.keys(byType).length?`<div class="notice">Incidencias: ${Object.entries(byType).map(([k,v])=>`<b>${k}</b> ${v}`).join(' · ')}</div>`:''}`; document.getElementById('logTable').innerHTML=state.logs.length?`<div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Tipo</th><th>Folio</th><th>ID</th><th>Evento</th><th>Estado</th><th>Cantidad</th><th>Resp.</th><th>Incidencia</th><th>Comentario</th></tr></thead><tbody>${state.logs.map(l=>`<tr><td>${l.time}</td><td>${l.type}</td><td>${l.folio||''}</td><td>${l.id||''}</td><td>${l.event||''}</td><td>${l.oldStatus||''} → ${l.newStatus||''}</td><td class="num">${l.qty!=null?fmt(l.qty):''}</td><td>${l.responsible||''}</td><td>${l.incident||''}</td><td>${l.comment||''}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">Sin eventos.</div>'; }
 function renderMaster(){
   const rows=state.components;
   document.getElementById('masterTable').innerHTML=`
@@ -544,25 +544,25 @@ function renderMaster(){
       </td>
       <td class="num"><input style="width:88px;padding:6px" type="number" step="0.001" value="${c.useL7}" onchange="updateComponent(${i},'useL7',this.value)"></td>
       <td class="num"><input style="width:88px;padding:6px" type="number" step="0.001" value="${c.useL8}" onchange="updateComponent(${i},'useL8',this.value)"></td>
-      <td class="num"><input style="width:100px;padding:6px" type="number" step="0.01" value="${c.stock}" onchange="updateComponent(${i},'stock',this.value)"><br><span class="small">${unitLabel(c)}</s[...]
-      <td class="num"><input style="width:86px;padding:6px" type="number" step="0.01" value="${c.pack}" onchange="updateComponent(${i},'pack',this.value)"><br><span class="small">${c.unit==='M'?'m/rol[...]
+      <td class="num"><input style="width:100px;padding:6px" type="number" step="0.01" value="${c.stock}" onchange="updateComponent(${i},'stock',this.value)"><br><span class="small">${unitLabel(c)}</span></td>
+      <td class="num"><input style="width:86px;padding:6px" type="number" step="0.01" value="${c.pack}" onchange="updateComponent(${i},'pack',this.value)"><br><span class="small">${c.unit==='M'?'m/rollo':'pzas/caja'}</span></td>
       <td class="num">${fmt(r.value,2)} ${unitLabel(c)}/h<br><span class="small">${r.source}</span></td>
       <td class="num">${fmt(r.rop, c.unit==='M'?1:0)} ${unitLabel(c)}</td>
       <td>${chip(r.status,r.color)}</td>
     </tr>`}).join('')}</tbody></table></div>`;
 } 
-function populateSelects(){ const opts=state.components.map(c=>`<option value="${c.id}">${c.id} · ${c.desc||c.belongs}</option>`).join(''); document.getElementById('manualSupplyComp').innerHTML=opts;[...]
-function render(){ state.components.forEach(refreshBelongs); document.getElementById('inspectionH').value=state.params.inspectionH; document.getElementById('resupplyMin').value=state.params.resupplyMi[...]
+function populateSelects(){ const opts=state.components.map(c=>`<option value="${c.id}">${c.id} · ${c.desc||c.belongs}</option>`).join(''); document.getElementById('manualSupplyComp').innerHTML=opts; if(document.getElementById('takeComp')) document.getElementById('takeComp').innerHTML=opts; }
+function render(){ state.components.forEach(refreshBelongs); document.getElementById('inspectionH').value=state.params.inspectionH; document.getElementById('resupplyMin').value=state.params.resupplyMin; document.getElementById('safetyPct').value=state.params.safetyPct; document.getElementById('defaultPack').value=state.params.defaultPack; populateSelects(); renderKpis(); renderBattery(); renderAlerts(); renderSupplyTickets(); renderTakeTickets(); renderFirstUses(); renderConsumptionTickets(); renderLog(); renderMaster(); checkAlertSound(); }
 // File reading
-async function readFile(file){ if(!file) return []; const name=file.name.toLowerCase(); if(name.endsWith('.csv')){ const text=await file.text(); return csvToRows(text); } if(window.XLSX){ const buf=aw[...]
-function csvToRows(text){ const lines=text.split(/\r?\n/).filter(Boolean); const headers=lines.shift().split(',').map(x=>x.trim()); return lines.map(l=>{const vals=l.split(','); const o={}; headers.fo[...]
+async function readFile(file){ if(!file) return []; const name=file.name.toLowerCase(); if(name.endsWith('.csv')){ const text=await file.text(); return csvToRows(text); } if(window.XLSX){ const buf=await file.arrayBuffer(); const wb=XLSX.read(buf,{type:'array'}); return XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''}); } alert('Para XLSX se requiere internet/CDN. Usa CSV si no carga.'); return []; }
+function csvToRows(text){ const lines=text.split(/\r?\n/).filter(Boolean); const headers=lines.shift().split(',').map(x=>x.trim()); return lines.map(l=>{const vals=l.split(','); const o={}; headers.forEach((h,i)=>o[h]=vals[i]); return o}); }
 function normId(x){return String(x||'').toUpperCase().trim()}
 function num(x){return +String(x||'0').replace(',','.')||0}
-async function loadFiles(){ const cons=await readFile(document.getElementById('consFile').files[0]); const stock=await readFile(document.getElementById('stockFile').files[0]); if(cons.length){ const b[...]
- if(stock.length){ const by={}; stock.forEach(r=>{ const id=normId(r.IDArticulo||r.idarticulo||r.Codigo||r.Código); if(!ALLIDS.includes(id)) return; const q=num(r.StockFisicoAlmacen||r.StockFisico||r[...]
+async function loadFiles(){ const cons=await readFile(document.getElementById('consFile').files[0]); const stock=await readFile(document.getElementById('stockFile').files[0]); if(cons.length){ const by={}; cons.forEach(r=>{ const id=normId(r.IDArticulo||r.idarticulo||r.Codigo||r.Código); if(!ALLIDS.includes(id)) return; const q=Math.abs(num(r.Cantidad||r.Consumo)); by[id]=(by[id]||0)+q; }); const hours=30*SHIFT_HOURS; state.components.forEach(c=>{ if(by[c.id]) c.erpConsumptionH=by[c.id]/hours; }); addLog('Sistema','ERP','Consumos','Archivo de consumo leído',{comment:`${Object.keys(by).length} componentes encontrados`}); }
+ if(stock.length){ const by={}; stock.forEach(r=>{ const id=normId(r.IDArticulo||r.idarticulo||r.Codigo||r.Código); if(!ALLIDS.includes(id)) return; const q=num(r.StockFisicoAlmacen||r.StockFisico||r.AcumuladoAlmacen||r.Acumulado||r.Stock||r.Existencia); if(!isNaN(q)) by[id]=Math.max(by[id]||0,q); }); state.components.forEach(c=>{ if(by[c.id]!=null){ c.stock=by[c.id]; c.erpStock=by[c.id]; }}); addLog('Sistema','ERP','Stock','Archivo de stock leído',{comment:`${Object.keys(by).length} componentes encontrados`}); }
  save(); render(); alert('Archivos procesados. Revisa maestro y alertas.'); }
-function exportData(){ const rows=state.components.map(c=>{const r=calc(c);return {ID:c.id,Uso:c.belongs,Unidad:c.unit,UsoL7:c.useL7,UsoL8:c.useL8,Stock:c.stock,ConsumoH:r.value,Fuente:r.source,ROP:r.[...]
-document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab-btn,.tab').forEach(x=>x.classList.remove('active')); btn.classList.add('active'); d[...]
+function exportData(){ const rows=state.components.map(c=>{const r=calc(c);return {ID:c.id,Uso:c.belongs,Unidad:c.unit,UsoL7:c.useL7,UsoL8:c.useL8,Stock:c.stock,ConsumoH:r.value,Fuente:r.source,ROP:r.rop,Estado:r.status,Criticidad:r.crit,Impacto:r.impact}}); const csv=[Object.keys(rows[0]).join(','),...rows.map(o=>Object.values(o).map(v=>`"${String(v).replaceAll('"','""')}"`).join(','))].join('\n'); const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download='andon_rop_l7_l8_estado.csv'; a.click(); }
+document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab-btn,.tab').forEach(x=>x.classList.remove('active')); btn.classList.add('active'); document.getElementById(btn.dataset.tab).classList.add('active');}));
 render();
 initFirebase();
 </script>
