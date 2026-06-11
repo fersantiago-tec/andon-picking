@@ -434,7 +434,7 @@ async function softNotify(force=false){
     master.connect(audioCtx.destination);
 
     // dos notas suaves, tipo notificación; no alarma de planta
-    const freqs=[880, 1180, 980];
+    const freqs=[820, 1040];
     freqs.forEach((f,i)=>{
       const o=audioCtx.createOscillator();
       const g=audioCtx.createGain();
