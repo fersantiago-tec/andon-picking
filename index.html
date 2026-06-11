@@ -56,7 +56,7 @@ body{margin:0;background:radial-gradient(circle at top left,#16213d 0,#0b1020 35
   </div>
 
   <section id="dashboard" class="tab active">
-    <div class="alert-sound"><span id="soundDot" class="sound-dot"></span><button class="btn ghost smallbtn" onclick="enableAlertSound()">Activar sonido suave de alertas</button><span class="small">Suena solo cuando aparece o aumenta una alerta de reorden/no alcanza. El navegador pide un clic para permitir audio.</span></div>
+    <div class="alert-sound"><span id="soundDot" class="sound-dot"></span><button id="soundToggleBtn" class="btn ghost smallbtn" onclick="toggleAlertSound()">Activar sonido</button><button class="btn secondary smallbtn" onclick="testAlertSound()">Probar sonido</button><span id="soundStatus" class="small">Sonido desactivado · actívalo con un clic para que el navegador permita audio.</span></div>
     <div class="kpis" id="kpis"></div>
     <div class="grid grid-2">
       <div class="panel">
@@ -249,7 +249,7 @@ function defaultState(){
 // 1) Cambia USE_FIREBASE a true.
 // 2) Pega aquí el objeto firebaseConfig de Firebase Console.
 // 3) Sube este archivo como index.html a GitHub Pages.
-const USE_FIREBASE = true;
+const USE_FIREBASE = false;
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyAS9yEZJUu_areBw_eqliXGGR8nO70W5c8",
   authDomain: "andon-2.firebaseapp.com",
@@ -388,30 +388,76 @@ function productiveRemainingHours(now=new Date()){
 }
 function neededRestOfShift(c){ const r=calc(c); return r.value * productiveRemainingHours(); }
 function willLastShift(c){ return c.stock >= neededRestOfShift(c); }
-function enableAlertSound(){
-  state.audioEnabled = true;
-  try{ audioCtx = audioCtx || new (window.AudioContext||window.webkitAudioContext)(); audioCtx.resume && audioCtx.resume(); }catch(e){}
-  const d=document.getElementById('soundDot'); if(d) d.classList.add('on');
-  softNotify(); save();
-}
-function softNotify(){
-  if(!state.audioEnabled) return;
+async function ensureAudioContext(){
   try{
     audioCtx = audioCtx || new (window.AudioContext||window.webkitAudioContext)();
-    const o=audioCtx.createOscillator(); const g=audioCtx.createGain();
-    o.type='sine'; o.frequency.setValueAtTime(660,audioCtx.currentTime);
-    g.gain.setValueAtTime(0.0001,audioCtx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.035,audioCtx.currentTime+0.015);
-    g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.22);
-    o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+0.24);
-  }catch(e){}
+    if(audioCtx.state === 'suspended' && audioCtx.resume){ await audioCtx.resume(); }
+    return true;
+  }catch(e){
+    console.warn('Audio no disponible', e);
+    return false;
+  }
+}
+function updateSoundUI(){
+  const enabled=!!state.audioEnabled;
+  const d=document.getElementById('soundDot');
+  const b=document.getElementById('soundToggleBtn');
+  const st=document.getElementById('soundStatus');
+  if(d) d.classList.toggle('on', enabled);
+  if(b){ b.textContent = enabled ? 'Desactivar sonido' : 'Activar sonido'; b.className = enabled ? 'btn green smallbtn' : 'btn ghost smallbtn'; }
+  if(st) st.textContent = enabled ? 'Sonido activado · notifica solo nuevas alertas de reorden/no alcanza.' : 'Sonido desactivado · actívalo con un clic para que el navegador permita audio.';
+}
+async function toggleAlertSound(){
+  state.audioEnabled = !state.audioEnabled;
+  if(state.audioEnabled){
+    const ok=await ensureAudioContext();
+    if(ok) await softNotify(true);
+  }
+  updateSoundUI(); save();
+}
+async function testAlertSound(){
+  state.audioEnabled = true;
+  await ensureAudioContext();
+  updateSoundUI();
+  await softNotify(true);
+  save();
+}
+async function softNotify(force=false){
+  if(!state.audioEnabled && !force) return;
+  try{
+    const ok=await ensureAudioContext(); if(!ok) return;
+    const now=audioCtx.currentTime;
+    const master=audioCtx.createGain();
+    master.gain.setValueAtTime(0.0001, now);
+    master.gain.exponentialRampToValueAtTime(0.055, now+0.02);
+    master.gain.exponentialRampToValueAtTime(0.0001, now+0.55);
+    master.connect(audioCtx.destination);
+
+    // dos notas suaves, tipo notificación; no alarma de planta
+    const freqs=[740, 980];
+    freqs.forEach((f,i)=>{
+      const o=audioCtx.createOscillator();
+      const g=audioCtx.createGain();
+      const t=now + i*0.16;
+      o.type='sine';
+      o.frequency.setValueAtTime(f,t);
+      g.gain.setValueAtTime(0.0001,t);
+      g.gain.exponentialRampToValueAtTime(0.7,t+0.015);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+0.12);
+      o.connect(g); g.connect(master);
+      o.start(t); o.stop(t+0.14);
+    });
+  }catch(e){ console.warn('No sonó la alerta', e); }
 }
 function checkAlertSound(){
   const alertIds=state.components.filter(c=>{const r=calc(c); return ['Agotado','Reorden'].includes(r.status) || !willLastShift(c);}).map(c=>c.id+':'+calc(c).status+':'+Math.round(c.stock)).sort();
   const sig=alertIds.join('|');
-  if(state.lastAlertSignature && sig && sig!==state.lastAlertSignature && alertIds.length>=lastAlertCount){ softNotify(); }
+  const hasNewSignature = state.lastAlertSignature && sig && sig!==state.lastAlertSignature;
+  const increasedAlerts = alertIds.length > lastAlertCount;
+  // Suena cuando aparece nueva alerta, cambia la composición de alertas o sube el total.
+  if(hasNewSignature || increasedAlerts){ softNotify(); }
   state.lastAlertSignature=sig; lastAlertCount=alertIds.length;
-  const d=document.getElementById('soundDot'); if(d) d.classList.toggle('on', !!state.audioEnabled);
+  updateSoundUI();
 }
 
 function renderKpis(){ const rows=state.components.map(c=>calc(c)); const k=[['Agotados',rows.filter(x=>x.status==='Agotado').length,'red'],['Debajo ROP',rows.filter(x=>x.status==='Reorden').length,'orange'],['Cerca ROP',rows.filter(x=>x.status==='Cerca ROP').length,'yellow'],['OK',rows.filter(x=>x.status==='OK').length,'green'],['Tickets abiertos',state.supplyTickets.filter(t=>!['Cerrado','Cancelado'].includes(t.status)).length,'blue']]; document.getElementById('kpis').innerHTML=k.map(x=>`<div class="kpi ${x[2]}"><b>${x[1]}</b><span>${x[0]}</span></div>`).join(''); }
