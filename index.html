@@ -434,7 +434,7 @@ async function softNotify(force=false){
     master.connect(audioCtx.destination);
 
     // dos notas suaves, tipo notificación; no alarma de planta
-    const freqs=[820, 1040];
+    const freqs=[1000, 1500];
     freqs.forEach((f,i)=>{
       const o=audioCtx.createOscillator();
       const g=audioCtx.createGain();
@@ -445,7 +445,7 @@ async function softNotify(force=false){
       g.gain.exponentialRampToValueAtTime(0.85,t+0.015);
       g.gain.exponentialRampToValueAtTime(0.0001,t+0.18);
       o.connect(g); g.connect(master);
-      o.start(t); o.stop(t+0.16);
+      o.start(t); o.stop(t+0.20);
     });
   }catch(e){ console.warn('No sonó la alerta', e); }
 }
