@@ -43,14 +43,14 @@ body{margin:0;background:radial-gradient(circle at top left,#16213d 0,#0b1020 35
 <body>
 <div class="app">
   <div class="header">
-    <div><h1>Andón ROP Picking · Líneas 7 y 8</h1><p>Modo almacén para resurtir · Modo línea para registrar consumo · Vista de disponibles para los componentes monitoreados.</p></div>
+    <div><h1>Andón ROP Picking · Líneas 7 y 8</h1><p>Modo almacén para resurtir · Modo línea para registrar tomas de material · Vista de disponibles para los componentes monitoreados.</p></div>
     <div class="pill"><span class="dot"></span><span id="saveState">Sincronización pendiente</span></div>
   </div>
 
   <div class="tabs">
     <button class="tab-btn active" data-tab="dashboard">Vista general</button>
     <button class="tab-btn" data-tab="almacen">Modo almacén · resurtidores</button>
-    <button class="tab-btn" data-tab="linea">Modo línea · toman producto</button>
+    <button class="tab-btn" data-tab="linea">Modo línea · tomas</button>
     <button class="tab-btn" data-tab="tickets">Tickets y bitácora</button>
     <button class="tab-btn" data-tab="maestro">Maestro y datos</button>
   </div>
@@ -99,19 +99,8 @@ body{margin:0;background:radial-gradient(circle at top left,#16213d 0,#0b1020 35
   <section id="linea" class="tab">
     <div class="grid grid-2">
       <div class="panel">
-        <h2>Modo línea · registro de consumo del turno</h2>
-        <p class="sub">Para quien toma/usa producto en línea. No pide horas de uso: usa las horas productivas del turno.</p>
-        <div class="controls">
-          <div><label>Línea</label><select id="consumeLine"><option value="L7">Línea 7</option><option value="L8">Línea 8</option></select></div>
-          <div><label>Arneses producidos en el turno</label><input id="consumeUnits" type="number" min="0" step="1" value="0" /></div>
-          <div><label>Responsable</label><input id="consumeResp" placeholder="Nombre" /></div>
-          <div><label>Turno productivo</label><input disabled value="8.92 h (8:00–17:35, pausas descontadas)" /></div>
-        </div>
-        <div class="actions"><button class="btn green" onclick="previewConsumption()">Previsualizar consumo</button><button class="btn" onclick="createConsumptionTicket()">Registrar consumo del día</button></div>
-        <div id="consumptionPreview" style="margin-top:14px"></div>
-        <hr style="border-color:rgba(255,255,255,.08);margin:18px 0">
-        <h3>Toma de material en tiempo real</h3>
-        <p class="sub">Para cuando la línea toma una caja, rollo o cantidad parcial del rack. Esto descuenta disponibles al momento y se ve en todas las pantallas.</p>
+        <h2>Modo línea · toma de material en tiempo real</h2>
+        <p class="sub">Aquí ya no se registra “consumo diario”. La línea solo registra cuando toma material del rack. Esa toma descuenta disponibles al momento y se sincroniza para todas las pantallas.</p>
         <div class="controls">
           <div><label>Línea</label><select id="takeLine"><option value="L7">Línea 7</option><option value="L8">Línea 8</option></select></div>
           <div><label>Componente</label><select id="takeComp"></select></div>
@@ -120,19 +109,20 @@ body{margin:0;background:radial-gradient(circle at top left,#16213d 0,#0b1020 35
         </div>
         <div class="actions">
           <button class="btn orange" onclick="createTakeTicket(false)">Registrar toma</button>
-          <button class="btn ghost" onclick="createTakeTicket(true)">Registrar toma + iniciar primer uso</button>
+          <button class="btn ghost" onclick="createTakeTicket(true)">Registrar toma + primer uso</button>
         </div>
-        <div class="notice" style="margin-top:12px">El “primer uso” abre un reloj de consumo estimado para saber si esa caja/rollo tomado alcanza durante el turno.</div>
+        <div class="notice" style="margin-top:12px">
+          <b>Registrar toma</b> = alguien tomó piezas/metros del rack y se descuentan disponibles.<br>
+          <b>Primer uso</b> = se abrió una caja/rollo y se empieza a estimar cuánto queda con el ritmo esperado.
+        </div>
       </div>
       <div class="panel">
         <h2>Actividad de línea</h2>
-        <p class="sub">Tomas en tiempo real, primeros usos abiertos y consumos de cierre de turno.</p>
+        <p class="sub">Solo movimientos de toma y primer uso. El cierre diario ya no aparece como acción principal.</p>
         <h3>Tomas registradas</h3>
         <div id="takeTickets"></div>
         <h3 style="margin-top:14px">Primeros usos abiertos</h3>
         <div id="firstUseTickets"></div>
-        <h3 style="margin-top:14px">Consumos registrados</h3>
-        <div id="consumptionTickets"></div>
       </div>
     </div>
   </section>
@@ -473,7 +463,7 @@ function renderFirstUses(){
 function previewConsumption(){ const line=document.getElementById('consumeLine').value; const units=+document.getElementById('consumeUnits').value||0; const rows=state.components.filter(c=>line==='L7'?c.useL7>0:c.useL8>0).map(c=>({id:c.id,unit:c.unit,qty:(line==='L7'?c.useL7:c.useL8)*units, use:(line==='L7'?c.useL7:c.useL8)})); document.getElementById('consumptionPreview').innerHTML=`<div class="table-wrap"><table><thead><tr><th>Componente</th><th class="num">Uso por arnés</th><th class="num">Consumo turno</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${r.id}</td><td class="num">${fmt(r.use,3)} ${r.unit}</td><td class="num">${fmt(r.qty,3)} ${r.unit}</td></tr>`).join('')}</tbody></table></div>`; }
 function createConsumptionTicket(){ const line=document.getElementById('consumeLine').value; const units=+document.getElementById('consumeUnits').value||0; const resp=document.getElementById('consumeResp').value||''; if(units<=0){alert('Pon areneses producidos.');return} const fol=folio('CON'); const details=[]; state.components.forEach(c=>{ const use=line==='L7'?c.useL7:c.useL8; if(use>0){ const qty=use*units; c.stock=Math.max(0,(+c.stock||0)-qty); details.push({id:c.id,unit:c.unit,qty:+qty.toFixed(4)}); }}); const t={folio:fol,line,units,shiftHours:SHIFT_HOURS,status:'Validado',responsible:resp,created:new Date().toLocaleString('es-MX'),details}; state.consumptionTickets.unshift(t); addLog('Consumo',fol,line,`Consumo validado ${line}`,{newStatus:'Validado',qty:units,responsible:resp,comment:`${details.length} componentes afectados`}); save(); render(); }
 function consumptionCard(t){ return `<div class="ticket-card"><div class="ticket-top"><div><div class="ticket-folio">${t.folio}</div><div class="small">${t.line} · ${fmt(t.units,0)} arneses · ${t.shiftHours.toFixed(2)} h productivas · ${t.created}</div></div>${chip(t.status,'green')}</div><div class="small">Responsable: <b>${t.responsible||'—'}</b> · Componentes descontados: ${t.details.length}</div><details style="margin-top:8px"><summary class="small">Ver desglose consumo</summary><div class="table-wrap" style="margin-top:8px"><table><thead><tr><th>Componente</th><th class="num">Cantidad</th></tr></thead><tbody>${t.details.map(d=>`<tr><td>${d.id}</td><td class="num">${fmt(d.qty,3)} ${d.unit}</td></tr>`).join('')}</tbody></table></div></details></div>` }
-function renderConsumptionTickets(){ document.getElementById('consumptionTickets').innerHTML=state.consumptionTickets.length?state.consumptionTickets.map(consumptionCard).join(''):'<div class="empty">Sin consumos registrados todavía.</div>'; }
+function renderConsumptionTickets(){ const el=document.getElementById('consumptionTickets'); if(!el) return; el.innerHTML=state.consumptionTickets.length?state.consumptionTickets.map(consumptionCard).join(''):'<div class="empty">Sin consumos registrados todavía.</div>'; }
 function renderLog(){ const inc=state.logs.filter(l=>l.type==='Incidencia'); const byType={}; inc.forEach(l=>{byType[l.incident||'Sin tipo']=(byType[l.incident||'Sin tipo']||0)+1}); document.getElementById('logSummary').innerHTML=`<div class="kpis" style="grid-template-columns:repeat(3,1fr)"><div class="kpi blue"><b>${state.logs.length}</b><span>Eventos</span></div><div class="kpi orange"><b>${state.supplyTickets.length}</b><span>Surtimientos</span></div><div class="kpi red"><b>${inc.length}</b><span>Incidencias</span></div></div>${Object.keys(byType).length?`<div class="notice">Incidencias: ${Object.entries(byType).map(([k,v])=>`<b>${k}</b> ${v}`).join(' · ')}</div>`:''}`; document.getElementById('logTable').innerHTML=state.logs.length?`<div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Tipo</th><th>Folio</th><th>ID</th><th>Evento</th><th>Estado</th><th>Cantidad</th><th>Resp.</th><th>Incidencia</th><th>Comentario</th></tr></thead><tbody>${state.logs.map(l=>`<tr><td>${l.time}</td><td>${l.type}</td><td>${l.folio||''}</td><td>${l.id||''}</td><td>${l.event||''}</td><td>${l.oldStatus||''} → ${l.newStatus||''}</td><td class="num">${l.qty!=null?fmt(l.qty):''}</td><td>${l.responsible||''}</td><td>${l.incident||''}</td><td>${l.comment||''}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">Sin eventos.</div>'; }
 function renderMaster(){
   const rows=state.components;
